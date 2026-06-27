@@ -1,5 +1,6 @@
 title: Masterful Machinery Wiki
 description: Documentation for Masterful Machinery on Minecraft 1.20.1 Forge
+baseurl: "/masterful-machinery-wiki"
 markdown: kramdown
 highlighter: rouge
 logo: /assets/images/logo.png
