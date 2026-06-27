@@ -15,6 +15,15 @@ Dense one-page reference for Masterful Machinery on **Minecraft 1.20.1 Forge**. 
 * Generated blocks are config-driven. Structures and recipes are datapack-driven. KubeJS can register the same concepts through events.
 * Main concepts: **controller** = machine brain; **port** = input/output storage or interaction block; **extra block** = generated decorative/helper block; **structure** = multiblock layout; **process recipe** = work performed by a formed structure.
 
+
+## Downloads and source
+
+* Official CurseForge: https://www.curseforge.com/minecraft/mc-mods/masterful-machinery-fork
+* Latest third-party release / JAR: https://github.com/FrozenGalaxy/MasterfulMachinery/releases/latest
+* Third-party source and build workflow: https://github.com/FrozenGalaxy/MasterfulMachinery
+* Original upstream source: https://github.com/BOLTMAGIC/MasterfulMachinery
+* Published wiki: https://frozengalaxy.github.io/masterful-machinery-wiki/
+
 ## File layout and ids
 
 ```text

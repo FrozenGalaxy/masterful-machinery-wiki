@@ -9,6 +9,7 @@ exclude:
   - masterful-machinery-wiki-final.zip
   - masterful-machinery-wiki-with-compact-reference.zip
   - masterful-machinery-wiki-polished.zip
+  - masterful-machinery-wiki-links.zip
 
 defaults:
   - scope:

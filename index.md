@@ -19,7 +19,9 @@ nav_order: 1
     or register the same concepts through KubeJS.
   </p>
   <div class="action-row">
-    <a class="button-link primary" href="./tutorial/step-by-step-datapack-edition/">Start the tutorial</a>
+    <a class="button-link primary" href="https://www.curseforge.com/minecraft/mc-mods/masterful-machinery-fork">Official CurseForge</a>
+    <a class="button-link" href="https://github.com/FrozenGalaxy/MasterfulMachinery/releases/latest">Latest third-party JAR</a>
+    <a class="button-link" href="./tutorial/step-by-step-datapack-edition/">Start the tutorial</a>
     <a class="button-link" href="./reference/compact-reference.html">Compact reference</a>
     <a class="button-link" href="./reference/json-field-reference.html">JSON fields</a>
     <a class="button-link" href="./reference/troubleshooting.html">Troubleshooting</a>
@@ -32,7 +34,8 @@ nav_order: 1
   <a class="card" href="./reference/concepts.html"><strong>Concepts</strong><span>Controller, port, structure, recipe, and ingredient basics.</span></a>
   <a class="card" href="./reference/file-layout.html"><strong>File layout</strong><span>Where config files, datapacks, and recipe files go.</span></a>
   <a class="card" href="./examples/compact-machine.html"><strong>Complete example</strong><span>A small working machine split into controller, port, structure, and recipe files.</span></a>
-  <a class="card" href="./compat/KubeJS-support/"><strong>KubeJS</strong><span>Startup/server events for generating MM content from scripts.</span></a>
+  <a class="card" href="./reference/downloads-and-source.html"><strong>Downloads & source</strong><span>Official CurseForge, third-party JAR builds, and source repositories.</span></a>
+  <a class="card" href="./compat/kubejs-support/"><strong>KubeJS</strong><span>Startup/server events for generating MM content from scripts.</span></a>
 </div>
 
 ## Core documentation
@@ -48,6 +51,7 @@ nav_order: 1
 
 ## Reference
 
+* [Downloads and Source](./reference/downloads-and-source.html) — official CurseForge, third-party release JARs, and source repositories.
 * [Compact Reference](./reference/compact-reference.html) — dense one-page summary for copy/paste and quick lookup.
 * [Complete JSON Field Reference](./reference/json-field-reference.html) — combined field list for controllers, ports, structures, recipes, and ingredients.
 * [Items and Commands](./reference/items-and-commands.html) — helper items and the `/mm reform` command.

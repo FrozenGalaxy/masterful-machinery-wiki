@@ -27,3 +27,11 @@ Values below were read from the provided source tree.
 * Minecraft target: `1.20.1`.
 * Loader target: Forge.
 * JEI, Jade, KubeJS, Create, Mekanism, PneumaticCraft, and Botania integration classes are present in the source. Some integrations only register when the corresponding mod is loaded.
+
+
+## Project links
+
+* [Official CurseForge](https://www.curseforge.com/minecraft/mc-mods/masterful-machinery-fork)
+* [Latest third-party release / JAR](https://github.com/FrozenGalaxy/MasterfulMachinery/releases/latest)
+* [Third-party source and build workflow](https://github.com/FrozenGalaxy/MasterfulMachinery)
+* [Original upstream source](https://github.com/BOLTMAGIC/MasterfulMachinery)

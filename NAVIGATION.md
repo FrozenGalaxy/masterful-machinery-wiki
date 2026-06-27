@@ -8,6 +8,7 @@ title: "Navigation"
 ## Start
 
 * [Home](./)
+* [Downloads and source](./reference/downloads-and-source.html)
 * [Concepts](./reference/concepts.html)
 * [File layout](./reference/file-layout.html)
 * [Step-by-step datapack tutorial](./tutorial/step-by-step-datapack-edition/)
@@ -47,12 +48,12 @@ title: "Navigation"
 
 ## KubeJS
 
-* [KubeJS support](./compat/KubeJS-support/)
-* [Register controllers](./compat/KubeJS-support/register-controller/)
-* [Register ports](./compat/KubeJS-support/register-port/)
-* [Register extra blocks](./compat/KubeJS-support/register-extra-blocks/)
-* [Create structures](./compat/KubeJS-support/create-structures/)
-* [Create process recipes](./compat/KubeJS-support/create-process-recipes/)
+* [KubeJS support](./compat/kubejs-support/)
+* [Register controllers](./compat/kubejs-support/register-controller/)
+* [Register ports](./compat/kubejs-support/register-port/)
+* [Register extra blocks](./compat/kubejs-support/register-extra-blocks/)
+* [Create structures](./compat/kubejs-support/create-structures/)
+* [Create process recipes](./compat/kubejs-support/create-process-recipes/)
 
 ## Examples and extras
 
