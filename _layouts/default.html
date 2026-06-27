@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title }} | {{ site.title }}</title>
+  <meta name="description" content="{{ site.description }}">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ '/assets/images/favicon-32x32.png' | relative_url }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ '/assets/images/favicon-16x16.png' | relative_url }}">
+  <link rel="shortcut icon" href="{{ '/assets/images/favicon.ico' | relative_url }}">
+  <link rel="apple-touch-icon" href="{{ '/assets/images/favicon-180x180.png' | relative_url }}">
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="{{ '/' | relative_url }}" aria-label="Masterful Machinery Wiki home">
+        <img src="{{ '/assets/images/logo.png' | relative_url }}" alt="Masterful Machinery logo">
+      </a>
+      <div class="header-copy">
+        <span class="site-kicker">Minecraft 1.20.1 Forge</span>
+        <strong>{{ site.title }}</strong>
+        <span>Custom multiblock machines, ports, recipes, structures, and KubeJS.</span>
+      </div>
+      <nav class="top-nav" aria-label="Top navigation">
+        <a href="{{ '/reference/compact-reference.html' | relative_url }}">Compact Reference</a>
+        <a href="{{ '/tutorial/step-by-step-datapack-edition/' | relative_url }}">Tutorial</a>
+        <a href="{{ '/reference/troubleshooting.html' | relative_url }}">Troubleshooting</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="site-shell">
+    <aside class="sidebar" aria-label="Wiki navigation">
+      {% include sidebar.html %}
+    </aside>
+    <main id="content" class="content">
+      {{ content }}
+    </main>
+  </div>
+</body>
+</html>
