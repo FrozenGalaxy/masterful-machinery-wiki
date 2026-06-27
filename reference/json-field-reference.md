@@ -30,10 +30,10 @@ Example:
 | Field | Type | Required | Notes |
 |---|---:|---:|---|
 | `type` | resource location | yes | Currently `mm:machine`. |
-| `id` | string | yes | Base controller id. Used to generate a controller block. |
+| `id` | string | yes | Base controller id. `coke_oven` generates the controller block/item id `mm:coke_oven`. |
 | `name` | string | yes | Display name. |
 | `parallelProcessingDefault` | boolean | no | Defaults to `false`. Used by recipes unless overridden. |
-| `maxParallelRecipes` | integer | no | `-1` means use global config. Other values clamp to `0..100`. |
+| `maxParallelRecipes` | integer | no | Controller override. `-1` means unspecified/fallback. Non-negative values clamp up to `100`. Global common config is separate and is ranged `1..100`. |
 
 ## Ports
 
@@ -59,7 +59,7 @@ Common fields:
 
 | Field | Type | Required | Notes |
 |---|---:|---:|---|
-| `id` | string | yes | Base port id. |
+| `id` | string | yes | Base port id. `item_port` generates `mm:item_port_input` and `mm:item_port_output`. |
 | `controllerIds` | resource location or array | yes | One controller id or a list of ids. |
 | `name` | string | yes | Display name. |
 | `type` | resource location | yes | See supported port types below. |
@@ -153,7 +153,7 @@ Example:
   ],
   "key": {
     "A": { "block": "minecraft:bricks" },
-    "C": { "block": "mm:coke_oven_controller" }
+    "C": { "block": "mm:coke_oven" }
   }
 }
 ```
@@ -165,7 +165,7 @@ Example:
 | `layout` | array of layers | yes | Layers are arrays of strings. Each character maps to `key`. |
 | `key` | object | yes | Character-to-piece definitions. |
 | `portsAnywhere` | boolean | no | Lets normal port and portType pieces match any of the candidate port positions in the layout. |
-| `maxParallelRecipes` | integer | no | Per-structure override, `-1` means unspecified, non-negative values clamp to `0..100`. |
+| `maxParallelRecipes` | integer | no | Per-structure override. `-1` means unspecified/fallback; non-negative values clamp up to `100`. Global common config is separate and is ranged `1..100`. |
 | `stateLists` | object | no | Defines named lists of block states used by `stateList` pieces. |
 
 ### Structure key piece types
@@ -185,6 +185,16 @@ A key entry is identified by the field it contains:
 | `stateList` | Require one of the named block states from `stateLists`. Optional `nameTranslationKey`. |
 | `properties` | Modifier array for blockstate properties, used together with a base piece. |
 
+
+For exact port matching, use the base port id plus the `input` flag:
+
+```json
+"I": { "port": "mm:item_port", "input": true }
+"O": { "port": "mm:item_port", "input": false }
+```
+
+Do not use `port: "mm:item_port_input"` as the normal structure form. Generated block ids include `_input` and `_output`, but the structure `port` requirement is intended to reference the base port id.
+
 ### Port type matching with tiers
 
 Example:
@@ -199,6 +209,56 @@ Example:
 ```
 
 This matches any input item port whose storage config `tierRank` is between 2 and 4. If a port config has no meaningful tier, it behaves like tier 1 for matching.
+
+
+## KubeJS generated-id rules
+
+For startup-generated config-backed content, `event.create(...)` takes a bare MM base id/path, not a namespaced id:
+
+```js
+MMEvents.registerControllers(event => {
+  event.create('coke_oven')
+    .type('mm:machine')
+    .name('Coke Oven')
+})
+
+MMEvents.registerExtraBlocks(event => {
+  event.create('basic_circuit')
+    .type('mm:circuit')
+    .name('Basic Circuit')
+})
+
+MMEvents.registerPorts(event => {
+  event.create('item_port')
+    .name('Item Port')
+    .controllerId('mm:coke_oven')
+    .config('mm:item', c => {
+      c.rows(1).columns(3).slotCapacity(64).tierRank(1)
+    })
+})
+```
+
+Wrong:
+
+```js
+event.create('mm:coke_oven')
+event.create('mm:basic_circuit')
+event.create('mm:item_port')
+```
+
+Structures and process recipes are different: those are datapack/resource ids and should be namespaced:
+
+```js
+MMEvents.createStructures(event => {
+  event.create('expert:coke_oven')
+    .controllerId('mm:coke_oven')
+})
+
+MMEvents.createProcesses(event => {
+  event.create('expert:coke_oven/charcoal')
+    .structureId('expert:coke_oven')
+})
+```
 
 ## Process recipes
 

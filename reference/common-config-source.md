@@ -43,4 +43,8 @@ previewBlueprintScreen = false
 * Increase `structureValidationRate` if you have many controllers and want less frequent structure checks.
 * Disable `debugTool` on public servers if players should not generate debug dumps.
 * Use `portsAutoExtractByDefault = false` and enable `autoPush` only on ports that need it.
-* Keep `maxParallelRecipes` modest. The source clamps relevant max values to the `1..100` or `0..100` range depending on context.
+* Keep global `maxParallelRecipes` modest. The common config value is ranged `1..100` and defaults to `5`. Controller/structure builder values are separate and may use `-1` as an unspecified/fallback value.
+
+## `maxParallelRecipes` range
+
+Global common config `maxParallelRecipes` is ranged `1..100` and defaults to `5`. Do not use `-1` in `mm-common.toml`; `-1` is only used by individual controller/structure builder/config fields to mean unspecified/fallback.

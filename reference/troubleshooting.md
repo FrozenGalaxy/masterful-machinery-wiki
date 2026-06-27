@@ -5,6 +5,25 @@ title: "Troubleshooting"
 
 # Troubleshooting
 
+
+## Startup crash: `mm:mm:<id>` or `ResourceLocationException`
+
+If startup fails with an error like:
+
+```text
+ResourceLocationException: Non [a-z0-9/._-] character in path of location: mm:mm:big_sieve_basic
+```
+
+check your KubeJS startup registrations. These events expect a bare MM id/path in `event.create(...)`:
+
+```js
+MMEvents.registerControllers(event => event.create('coke_oven'))
+MMEvents.registerExtraBlocks(event => event.create('basic_circuit'))
+MMEvents.registerPorts(event => event.create('item_port'))
+```
+
+Do not pass `mm:coke_oven`, `mm:basic_circuit`, or `mm:item_port` to those startup registration events. The mod registers generated blocks/items under the `mm` namespace internally. Structures and process recipes are different: use full resource ids there, such as `expert:coke_oven` or `expert:coke_oven/charcoal`.
+
 ## The controller block exists but the structure will not form
 
 Check these first:

@@ -38,7 +38,7 @@ Minimal example:
 | Field | Meaning |
 |---|---|
 | `type` | Controller type. For normal machines use `mm:machine`. |
-| `id` | Unique controller path. `my_controller` becomes `mm:my_controller`. |
+| `id` | Unique controller path. `my_controller` becomes the generated controller block/item id `mm:my_controller`. |
 | `name` | Default English display name. Translation key: `block.mm.<id>`. |
 
 ## Parallel-processing fields
@@ -61,6 +61,8 @@ Controllers can define default parallel-processing behaviour:
 | `maxParallelRecipes` | `-1` | Controller-level parallel cap. `-1` means use the global config value. Non-negative values are capped internally at `100`. |
 
 ## ID usage
+
+The generated controller block id is exactly `mm:<id>`. For example, `id: "my_controller"` generates `mm:my_controller`, not `mm:my_controller_controller`.
 
 When another file references this controller, use the full ID:
 

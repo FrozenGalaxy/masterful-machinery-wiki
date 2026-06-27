@@ -5,44 +5,63 @@ title: "Register Port"
 
 # Register Port
 
-Register Ports with KubeJS Startup Scripts
+Register generated ports with a KubeJS startup script.
 
-### Startup Script
+## Startup script
 
-```
+```js
 MMEvents.registerPorts(event => {
-    event.create("my_port")
-        .name("My Energy Port")
-        .controllerId("mm:my_controller")
-        .config("mm:energy", c => {
-            c.capacity(1000000)
-             .maxReceive(1000)
-             .maxExtract(1000);
+  event.create('item_port')
+    .name('Item Port')
+    .controllerId('mm:coke_oven')
+    .config('mm:item', c => {
+      c.rows(1).columns(3).slotCapacity(64).tierRank(1)
     })
 })
 ```
 
-To register ports in KubeJS, you can call `MMEvents.registerPorts`.
+`event.create(...)` takes the bare MM base port id/path. Do **not** include `mm:` here.
 
-> Note: all functions will map to the fields of the [Port Json](../../../current/ports)
+Correct:
 
-The `create` function takes a string parameter which maps directly to the ports `"id"` field and returns a builder to set the rest of the fields for the port.
+```js
+event.create('item_port')
+```
 
-The `name` function takes a string parameter which maps directory to ports `"name"` field.
+Wrong:
 
-The `controllerId` function takes a string parameter which gets added to the ports `"controllerIds"` field. This function can be called multiple times with different parameter values to allow multiple controllers ids to be set.
+```js
+event.create('mm:item_port')
+```
 
-The `config` function takes 2 parameters. First of which is a string which maps directly to the ports `"type"` field. The second parameter is an arrow function (consumer) to build the values inside of the type specific `"config"` object field.
+The generated block/item ids are:
 
-All functions for the `config` function's arrow function consumer, map directly to the port's `"config"` object field values.
+```text
+mm:item_port_input
+mm:item_port_output
+```
 
-See more on the `config` object's fields [here](../../../current/ports#port-types)
+## Structure references
 
-## Current 1.20.1 config builder methods
+For exact port matching in structures, use the base port id plus the `input` flag:
+
+```js
+l.key('I', { port: 'mm:item_port', input: true })
+l.key('O', { port: 'mm:item_port', input: false })
+```
+
+Port-type matching is often cleaner:
+
+```js
+l.key('I', { portType: 'mm:item', input: true, minTier: 1, maxTier: 1 })
+l.key('E', { portType: 'mm:energy', input: true, minTier: 1, maxTier: 1 })
+```
+
+## Builder methods
 
 ```js
 MMEvents.registerPorts(event => {
-  event.create('mm:my_item_port')
+  event.create('my_item_port')
     .name('My Item Port')
     .controllerId('mm:my_controller')
     .config('mm:item', c => {
@@ -55,6 +74,13 @@ MMEvents.registerPorts(event => {
 })
 ```
 
+| Method | Meaning |
+|---|---|
+| `create(id)` | Bare generated MM base port id/path. Input/output suffixes are added by the mod. |
+| `name(text)` | Default display name. |
+| `controllerId(id)` | Full controller id, for example `mm:coke_oven`. Can be called more than once. |
+| `config(portType, builder => ...)` | Port type id plus type-specific config builder. |
+
 Common config builder methods by type:
 
 | Type | Methods |
@@ -65,4 +91,9 @@ Common config builder methods by type:
 | `mm:create/kinetic` | `stress` |
 | `mm:botania/mana` | `capacity` |
 | `mm:pneumaticcraft/air` | `volume`, `danger`, `critical` |
-| Mekanism chemical ports | `capacity` or `amount` |
+| `mm:mekanism/gas` | `capacity` or `amount`, depending on builder/source version |
+| `mm:mekanism/slurry` | `capacity` or `amount`, depending on builder/source version |
+| `mm:mekanism/pigment` | `capacity` or `amount`, depending on builder/source version |
+| `mm:mekanism/infuse` | `capacity` or `amount`, depending on builder/source version |
+
+> **Important:** Startup-generated controllers, ports, and extra blocks use bare ids in `event.create(...)`. Structures and process recipes are datapack/resource ids and should be namespaced.

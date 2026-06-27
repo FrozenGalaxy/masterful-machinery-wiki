@@ -46,8 +46,12 @@ previewBlueprintScreen = false
 | `asyncValidation` | Allows structure validation work to happen asynchronously where supported. |
 | `structureValidationRate` | Tick interval between structure validation attempts. Lower values validate more often. |
 | `parallelProcessingDefault` | Default parallel-processing behaviour for controllers/structures that do not override it. |
-| `maxParallelRecipes` | Global cap for parallel recipes when a controller or structure does not define a more specific cap. |
+| `maxParallelRecipes` | Global cap for parallel recipes when a controller or structure does not define a more specific cap. Range `1..100`, default `5`. |
 | `showJeiMaxParallel` | Shows max-parallel information in JEI when relevant. |
 | `previewBlueprintScreen` | Enables the preview blueprint screen feature. |
 
 See [Common Config Reference](../../reference/common-config-source.html) for the combined config reference.
+
+## `maxParallelRecipes` range
+
+Global common config `maxParallelRecipes` is ranged `1..100` and defaults to `5`. Do not use `-1` in `mm-common.toml`; `-1` is only used by individual controller/structure builder/config fields to mean unspecified/fallback.

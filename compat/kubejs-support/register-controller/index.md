@@ -5,40 +5,64 @@ title: "Register Controller"
 
 # Register Controller
 
-Register Controllers with Kube JS startup scripts.
+Register generated controllers with a KubeJS startup script.
 
-### Startup Script
+## Startup script
 
-The following JavaScript example goes into the KubeJS `startup_scripts` folder
-
-```
-MMEvents.registerControllers(event => {
-    event.create("my_controller")
-        .name("My Controller")
-        .type("mm:machine");
-});
-```
-
-To register controllers in KubeJS, you can call `MMEvents.registerControllers`.
-
-> Note: all functions will map to the fields of the [Controller Json](../../../current/controllers)
-
-The `create` function takes a string parameter which maps directly to the controller `"id"` field and returns a builder to set the rest of the fields for the controller.
-
-The `name` function takes a string parameter which maps directory to controllers `"name"` field.
-
-the `type` function takes a string parameter which maps directly to the controller `"type"` field.
-
-## Current 1.20.1 builder methods
+The script goes in `kubejs/startup_scripts/`.
 
 ```js
 MMEvents.registerControllers(event => {
-  event.create('mm:my_controller')
+  event.create('my_controller')
     .type('mm:machine')
     .name('My Controller')
+})
+```
+
+`event.create(...)` takes the bare MM controller id/path. Do **not** include `mm:` here.
+
+Correct:
+
+```js
+event.create('coke_oven')
+```
+
+Wrong:
+
+```js
+event.create('mm:coke_oven')
+```
+
+The generated controller block/item/menu/block-entity id is exactly:
+
+```text
+mm:coke_oven
+```
+
+not:
+
+```text
+mm:coke_oven_controller
+```
+
+## Builder methods
+
+```js
+MMEvents.registerControllers(event => {
+  event.create('coke_oven')
+    .type('mm:machine')
+    .name('Coke Oven')
     .parallelProcessingDefault(false)
     .maxParallelRecipes(-1)
 })
 ```
 
-`maxParallelRecipes(-1)` means unspecified/global default. Non-negative values are clamped to `100`.
+| Method | Meaning |
+|---|---|
+| `create(id)` | Bare generated MM id/path. `coke_oven` becomes `mm:coke_oven`. |
+| `type(id)` | Controller type. Normal machines use `mm:machine`. |
+| `name(text)` | Default display name. |
+| `parallelProcessingDefault(bool)` | Optional controller-level default for recipe parallelism. |
+| `maxParallelRecipes(int)` | Optional controller-level cap. `-1` means unspecified/fallback. |
+
+> **Important:** Startup-generated controllers, ports, and extra blocks use bare ids in `event.create(...)`. Structures and process recipes are datapack/resource ids and should be namespaced.

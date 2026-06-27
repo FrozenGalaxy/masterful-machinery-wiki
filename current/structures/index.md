@@ -38,7 +38,7 @@ mypack:coke_oven
   ],
   "key": {
     "A": { "block": "minecraft:glass" },
-    "P": { "block": "mm:my_port_input" },
+    "P": { "port": "mm:my_port", "input": true },
     "D": { "portType": "mm:item", "input": false },
     "1": { "port": "mm:my_port", "input": true },
     "2": { "port": "mm:my_port", "input": false }
@@ -80,6 +80,9 @@ At the structure root, `portsAnywhere: true` allows normal port and port-type pi
   }
 }
 ```
+
+
+For exact port matching, use the base port id plus `input: true` or `input: false`. For a port registered as `my_port`, use `port: "mm:my_port"`, not `port: "mm:my_port_input"`. The generated block ids are still `mm:my_port_input` and `mm:my_port_output`, but the structure `port` requirement is intended to use the base port id.
 
 ## Port-type pieces
 

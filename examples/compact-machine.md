@@ -37,7 +37,7 @@ This example creates a tiny furnace-like multiblock with one controller, one ite
 }
 ```
 
-This generates input and output variants of the port.
+This generates input and output variants of the port: `mm:tiny_item_port_input` and `mm:tiny_item_port_output`.
 
 ## 3. Structure
 
@@ -56,9 +56,9 @@ This generates input and output variants of the port.
   ],
   "key": {
     "A": { "block": "minecraft:bricks" },
-    "C": { "block": "mm:tiny_furnace_controller" },
-    "I": { "portType": "mm:item", "input": true },
-    "O": { "portType": "mm:item", "input": false }
+    "C": { "block": "mm:tiny_furnace" },
+    "I": { "port": "mm:tiny_item_port", "input": true },
+    "O": { "port": "mm:tiny_item_port", "input": false }
   }
 }
 ```
@@ -103,3 +103,16 @@ This generates input and output variants of the port.
 5. Place the multiblock exactly as the layout describes.
 6. Insert cobblestone into an input item port.
 7. Confirm stone appears in an output item port after 100 ticks.
+
+
+## Expected generated IDs
+
+After the config is loaded, the expected generated IDs are:
+
+```text
+mm:tiny_furnace
+mm:tiny_item_port_input
+mm:tiny_item_port_output
+```
+
+Do not use `mm:tiny_furnace_controller` for the controller block. The controller block id is exactly the generated controller id, `mm:tiny_furnace`.

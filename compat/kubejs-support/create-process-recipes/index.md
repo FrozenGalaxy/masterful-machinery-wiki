@@ -5,56 +5,29 @@ title: "Create Process Recipes"
 
 # Create Process Recipes
 
-Create process recipes with KubeJS Server Scripts
+Create process recipes with KubeJS server scripts.
 
-### Server Script
+## Server script
 
-```
+```js
 MMEvents.createProcesses(event => {
-    event.create("mm:my_process_recipe")
-        .structureId("mm:my_structure")
-        .ticks(1000)
-        .input({
-            type: "mm:input/consume",
-            ingredient: {
-                type: "mm:item",
-                item: "minecraft:glass",
-                count: 10
-            }
-        })
-        .input({
-            type: "mm:input/consume",
-            ingredient: {
-                type: "mm:fluid",
-                fluid: "minecraft:water",
-                amount: 1000
-            }
-        })
-        .output({
-            type: "mm:output/simple",
-            ingredient: {
-                type: "mm:energy",
-                amount: 1000
-            }
-        })
+  event.create('expert:coke_oven/charcoal')
+    .structureId('expert:coke_oven')
+    .ticks(1000)
+    .input({
+      type: 'mm:input/consume',
+      ingredient: { type: 'mm:item', item: 'minecraft:oak_log', count: 1 }
+    })
+    .output({
+      type: 'mm:output/simple',
+      ingredient: { type: 'mm:item', item: 'minecraft:charcoal', count: 1 }
+    })
 })
 ```
 
-To register controllers in KubeJS, you can call `MMEvents.createProcesses`.
+Process recipes are datapack/resource ids. `event.create(...)` should use a full resource location such as `expert:coke_oven/charcoal`.
 
-> Note: all functions will map to the fields of the [Process Recipe Json](../../../current/process-recipes)
-
-The `create` function takes a string parameter which is the id of the process recipe (normally inferred from the location of the json file in a datapack). The function returns a builder to set the rest of the fields for the process recipe.
-
-the `structureId` function takes a string parameter which maps directly to the process recipe's `"structureId"` field.
-
-The `ticks` function takes an integer parameter which maps directly to the process recipe's `"ticks"` field.
-
-The `input` function takes an object of an input recipe entry and adds it to the list of object of the process recipe's `"inputs"` array field.
-
-The `output` function takes an object of an output recipe entry and adds it to the list of object of the process recipe's `"outputs"` array field.
-
-## Current 1.20.1 builder methods
+## Builder methods
 
 ```js
 MMEvents.createProcesses(event => {
@@ -72,5 +45,14 @@ MMEvents.createProcesses(event => {
     })
 })
 ```
+
+| Method | Meaning |
+|---|---|
+| `create(id)` | Full process recipe resource location. |
+| `structureId(id)` | Full structure id this recipe belongs to. |
+| `ticks(int)` | Runtime in game ticks. |
+| `parallelProcessing(bool)` | Optional recipe-level override. |
+| `input(object)` | Adds an input entry JSON object. |
+| `output(object)` | Adds an output entry JSON object. |
 
 The builder stores input/output entries as JSON objects. Any valid JSON recipe entry can be used here.

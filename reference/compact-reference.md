@@ -45,7 +45,7 @@ data/mypack/mm/structures/coke_oven.json                -> structure id mypack:c
 data/mypack/mm/processes/coke_oven/charcoal.json        -> process id mypack:coke_oven/charcoal
 ```
 
-Generated controller and port block registry names are normally based on the base id plus generated suffixes, for example a controller like `coke_oven` becomes a controller block such as `mm:coke_oven_controller`. Port JSON creates input and output variants; structures can match a specific generated port or match by port type.
+Generated controller and port block registry names are normally based on the base id plus generated suffixes, for example a controller like `coke_oven` becomes a controller block such as `mm:coke_oven`. Port JSON creates input and output variants; structures can match a specific generated port or match by port type.
 
 ## Common config: `config/mm-common.toml`
 
@@ -56,7 +56,7 @@ debugTool = true                       # enables Debug Tool behavior
 splitRecipesJei = true                 # split JEI categories by structure
 portsAutoExtractByDefault = false      # default autoPush/auto-extract fallback
 parallelProcessingDefault = false      # global recipe parallel default
-maxParallelRecipes = 5                 # global parallel cap
+maxParallelRecipes = 5                 # global parallel cap, range 1..100
 showJeiMaxParallel = true              # show parallel info in JEI structure view
 [preview_features]
 previewBlueprintScreen = false         # experimental blueprint preview UI
@@ -78,13 +78,13 @@ Path: `config/mm/controllers/<file>.json`.
 }
 ```
 
-Fields: `type` required, currently `mm:machine`; `id` required base id; `name` required display name; `parallelProcessingDefault` optional boolean default `false`; `maxParallelRecipes` optional integer, `-1` means use wider/global default, non-negative values clamp up to `100`.
+Fields: `type` required, currently `mm:machine`; `id` required base id; `name` required display name; `parallelProcessingDefault` optional boolean default `false`; controller `maxParallelRecipes` optional integer, `-1` means unspecified/fallback, non-negative values clamp up to `100`. The global common config value is separate and is ranged `1..100`.
 
 KubeJS startup equivalent:
 
 ```js
 MMEvents.registerControllers(event => {
-  event.create('mm:coke_oven')
+  event.create('coke_oven')
     .type('mm:machine')
     .name('Coke Oven')
     .parallelProcessingDefault(false)
@@ -106,7 +106,7 @@ KubeJS startup equivalent:
 
 ```js
 MMEvents.registerExtraBlocks(event => {
-  event.create('mm:basic_circuit').type('mm:circuit').name('Basic Circuit')
+  event.create('basic_circuit').type('mm:circuit').name('Basic Circuit')
 })
 ```
 
@@ -130,7 +130,7 @@ KubeJS startup equivalent:
 
 ```js
 MMEvents.registerPorts(event => {
-  event.create('mm:item_port')
+  event.create('item_port')
     .name('Item Port')
     .controllerId('mm:coke_oven')
     .config('mm:item', c => {
@@ -212,7 +212,7 @@ Path: `data/<namespace>/mm/structures/<path>.json`.
   ],
   "key": {
     "A": { "block": "minecraft:bricks" },
-    "C": { "block": "mm:tiny_furnace_controller" },
+    "C": { "block": "mm:tiny_furnace" },
     "I": { "portType": "mm:item", "input": true },
     "O": { "portType": "mm:item", "input": false }
   }
@@ -234,7 +234,7 @@ Structure key requirement forms:
 { "block": "minecraft:oak_log", "properties": [{ "property": "axis", "value": "x" }] }
 ```
 
-`port` requires a specific port id. `portType` allows any port of a type. `input` may be omitted to accept input or output. `minTier` defaults to `1`; `maxTier` defaults to effectively unlimited; the matched port's config `tierRank` is used. `portsAnywhere: true` lets port/portType pieces match any candidate port positions, still requiring unique matched positions.
+Specific port matching uses the base port id plus `input`, for example `{ "port": "mm:item_port", "input": true }`; do not normally write `{ "port": "mm:item_port_input" }`. `port` requires a specific port id. `portType` allows any port of a type. `input` may be omitted to accept input or output. `minTier` defaults to `1`; `maxTier` defaults to effectively unlimited; the matched port's config `tierRank` is used. `portsAnywhere: true` lets port/portType pieces match any candidate port positions, still requiring unique matched positions.
 
 KubeJS server equivalent:
 
@@ -247,7 +247,7 @@ MMEvents.createStructures(event => {
     .layout(l => {
       l.layer(['III', 'ACA', 'OOO'])
       l.key('A', { block: 'minecraft:bricks' })
-      l.key('C', { block: 'mm:tiny_furnace_controller' })
+      l.key('C', { block: 'mm:tiny_furnace' })
       l.key('I', { portType: 'mm:item', input: true })
       l.key('O', { portType: 'mm:item', input: false })
       l.portsAnywhere(false)
@@ -351,7 +351,7 @@ Structure: `datapacks/tiny_furnace/data/tiny/mm/structures/tiny_furnace.json`
   "layout": [["III", "ACA", "OOO"]],
   "key": {
     "A": { "block": "minecraft:bricks" },
-    "C": { "block": "mm:tiny_furnace_controller" },
+    "C": { "block": "mm:tiny_furnace" },
     "I": { "portType": "mm:item", "input": true },
     "O": { "portType": "mm:item", "input": false }
   }
@@ -368,6 +368,21 @@ Recipe: `datapacks/tiny_furnace/data/tiny/mm/processes/smelt_stone.json`
   "outputs": [{ "type": "mm:output/simple", "ingredient": { "type": "mm:item", "item": "minecraft:stone", "count": 1 } }]
 }
 ```
+
+
+## KubeJS id rules
+
+Startup-generated config-backed content uses bare MM ids in `event.create(...)`; datapack/server content uses full resource locations.
+
+| Context | Event | `event.create(...)` expects | Example | Generated / referenced id |
+|---|---|---|---|---|
+| Controller | `MMEvents.registerControllers` | bare MM base id/path | `event.create('coke_oven')` | `mm:coke_oven` |
+| Extra block | `MMEvents.registerExtraBlocks` | bare MM base id/path | `event.create('basic_circuit')` | `mm:basic_circuit` |
+| Port | `MMEvents.registerPorts` | bare MM base id/path | `event.create('item_port')` | `mm:item_port_input`, `mm:item_port_output` |
+| Structure | `MMEvents.createStructures` | full resource location | `event.create('expert:coke_oven')` | `expert:coke_oven` |
+| Process recipe | `MMEvents.createProcesses` | full resource location | `event.create('expert:coke_oven/charcoal')` | `expert:coke_oven/charcoal` |
+
+Important: `MMEvents.registerControllers`, `MMEvents.registerExtraBlocks`, and `MMEvents.registerPorts` take a bare MM id/path in `event.create(...)`, such as `coke_oven`, not `mm:coke_oven`. Passing `mm:coke_oven` there can create an invalid double namespace like `mm:mm:coke_oven`.
 
 ## KubeJS event names and placement
 
@@ -404,9 +419,65 @@ port config builders: item rows/columns/autoPush/slotCapacity/tierRank; fluid ro
 * Multiblock Saver: marks two corners and captures a structure region to JSON/JS-style output; source has safety checks including a 50,000-block capture limit and a limit on unique key characters.
 * Command: `/mm reform`, permission level 2. Scans loaded chunks around players, finds controller block entities, checks known structures, and reforms matching controllers. Useful after structure edits or migrations.
 
+
+## Known-good KubeJS smoke test
+
+```js
+MMEvents.registerControllers(event => {
+  event.create('test_machine')
+    .type('mm:machine')
+    .name('Test Machine')
+})
+
+MMEvents.registerExtraBlocks(event => {
+  event.create('test_casing')
+    .type('mm:gearbox')
+    .name('Test Casing')
+})
+
+MMEvents.registerPorts(event => {
+  event.create('test_item_port')
+    .name('Test Item Port')
+    .controllerId('mm:test_machine')
+    .config('mm:item', c => {
+      c.rows(1).columns(1).slotCapacity(64).tierRank(1)
+    })
+})
+
+MMEvents.createStructures(event => {
+  event.create('expert:test_machine')
+    .name('Test Machine')
+    .controllerId('mm:test_machine')
+    .layout(l => {
+      l.layer(['ICI'])
+      l.key('C', { block: 'mm:test_machine' })
+      l.key('I', { port: 'mm:test_item_port', input: true })
+    })
+})
+```
+
+Expected registry ids after restart:
+
+```text
+mm:test_machine
+mm:test_casing
+mm:test_item_port_input
+mm:test_item_port_output
+```
+
+Not expected:
+
+```text
+mm:test_machine_controller
+mm:mm:test_machine
+mm:mm:test_item_port_input
+```
+
 ## Troubleshooting checklist
 
 Structure not forming:
+
+0. For KubeJS startup registration crashes, check that `registerControllers`, `registerPorts`, and `registerExtraBlocks` use bare ids in `event.create(...)`. `mm:mm:<id>` means a namespaced id was passed where a bare id was expected.
 
 1. Structure file path is `data/<namespace>/mm/structures/` and world/datapack is loaded.
 2. `controllerIds` contains the controller id, not a wrong block id.
