@@ -9,8 +9,7 @@ Values below were read from the provided source tree.
 
 | Property | Value |
 |---|---|
-| `mod_version` | `3-1.20.1-0.1.33.10` |
-| `mod_stability_name` | `BETA` |
+| `mod_version` | `latest` |
 | `mc_version` | `1.20.1` |
 | `jei_version` | `15.20.0.112` |
 | `mekanism_version` | `1.20.1-10.4.16.80` |

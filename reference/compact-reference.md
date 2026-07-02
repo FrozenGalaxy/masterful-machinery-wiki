@@ -10,7 +10,7 @@ Dense one-page reference for Masterful Machinery on **Minecraft 1.20.1 Forge**. 
 ## Identity and scope
 
 * Mod id: `mm`.
-* Target in the provided source: Minecraft `1.20.1`, Forge, mod version `3-1.20.1-0.1.33.10`, stability `BETA`.
+* Target in the provided source: Minecraft `1.20.1`, Forge.
 * Masterful Machinery lets pack authors define generated multiblock machine controllers, ports, extra blocks, structures, and process recipes without writing a custom Java mod per machine.
 * Generated blocks are config-driven. Structures and recipes are datapack-driven. KubeJS can register the same concepts through events.
 * Main concepts: **controller** = machine brain; **port** = input/output storage or interaction block; **extra block** = generated decorative/helper block; **structure** = multiblock layout; **process recipe** = work performed by a formed structure.

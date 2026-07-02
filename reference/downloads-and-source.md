@@ -17,6 +17,6 @@ The CurseForge page is the official public mod page. The GitHub release link bel
 
 ## Version documented
 
-This wiki targets **Minecraft 1.20.1 Forge** and source version `3-1.20.1-0.1.33.10`.
+This wiki targets **Minecraft 1.20.1 Forge** and the latest version of the Mod.
 
 If a newer release changes JSON formats, port fields, KubeJS event names, or generated block behavior, prefer the newer release notes and source code over older examples.
