@@ -22,7 +22,6 @@ Dense one-page reference for Masterful Machinery on **Minecraft 1.20.1 Forge**. 
 * Latest third-party release / JAR: https://github.com/FrozenGalaxy/MasterfulMachinery/releases/latest
 * Third-party source and build workflow: https://github.com/FrozenGalaxy/MasterfulMachinery
 * Original upstream source: https://github.com/BOLTMAGIC/MasterfulMachinery
-* Published wiki: https://frozengalaxy.github.io/masterful-machinery-wiki/
 
 ## File layout and ids
 
@@ -74,11 +73,12 @@ Path: `config/mm/controllers/<file>.json`.
   "id": "coke_oven",
   "name": "Coke Oven",
   "parallelProcessingDefault": false,
-  "maxParallelRecipes": -1
+  "maxParallelRecipes": -1,
+  "recipeSelectionMode": "default"
 }
 ```
 
-Fields: `type` required, currently `mm:machine`; `id` required base id; `name` required display name; `parallelProcessingDefault` optional boolean default `false`; controller `maxParallelRecipes` optional integer, `-1` means unspecified/fallback, non-negative values clamp up to `100`. The global common config value is separate and is ranged `1..100`.
+Fields: `type` required, currently `mm:machine`; `id` required base id; `name` required display name; `parallelProcessingDefault` optional boolean default `false`; controller `maxParallelRecipes` optional integer, `-1` means unspecified/fallback, non-negative values clamp up to `100`; `recipeSelectionMode` optional string: `default`, `avoid_same_recipe`, or `round_robin_input_item`. The global common config value is separate and is ranged `1..100`.
 
 KubeJS startup equivalent:
 
@@ -89,6 +89,7 @@ MMEvents.registerControllers(event => {
     .name('Coke Oven')
     .parallelProcessingDefault(false)
     .maxParallelRecipes(-1)
+    .recipeSelectionMode('default')
 })
 ```
 
@@ -399,10 +400,12 @@ MMEvents.createProcesses(event => {})
 
 Controllers, ports, and extra blocks are startup content. Structures and process recipes are server content.
 
+Recipe selection modes: `default` uses normal scan order; `avoid_same_recipe` avoids immediately repeating the exact recipe when possible; `round_robin_input_item` prefers the least-recently-used consumed item input among runnable recipes, useful for sieve-like machines.
+
 Common builder method map:
 
 ```text
-controller: create(id), type(id), name(text), parallelProcessingDefault(bool), maxParallelRecipes(int)
+controller: create(id), type(id), name(text), parallelProcessingDefault(bool), maxParallelRecipes(int), recipeSelectionMode(string)
 port: create(id), name(text), controllerId(id) repeatable, config(portType, builder => ...)
 extra block: create(id), type(id), name(text)
 structure: create(id), name(text), controllerId(id) repeatable, maxParallelRecipes(int), layout(builder => ...)
@@ -413,7 +416,7 @@ port config builders: item rows/columns/autoPush/slotCapacity/tierRank; fluid ro
 
 ## Items and commands
 
-* Blueprint: stores a structure id in NBT and is used by structure-view/preview features.
+* Blueprint: stores a structure id in NBT and is used by structure-view/preview features. Blueprint item names include the structure name when available, for example `Coke Oven - Blueprint`.
 * Debug Tool: right-click a controller to generate a debug dump when `debugTool = true`.
 * Priority Setter: right-click in air cycles priority `0..10`; sneak-right-click air resets to `0`; sneak-right-click output port applies priority; input ports reject priority. Useful when multiple output ports can accept the same output.
 * Multiblock Saver: marks two corners and captures a structure region to JSON/JS-style output; source has safety checks including a 50,000-block capture limit and a limit on unique key characters.

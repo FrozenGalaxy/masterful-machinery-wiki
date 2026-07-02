@@ -54,6 +54,7 @@ MMEvents.registerControllers(event => {
     .name('Coke Oven')
     .parallelProcessingDefault(false)
     .maxParallelRecipes(-1)
+    .recipeSelectionMode('default')
 })
 ```
 
@@ -64,5 +65,31 @@ MMEvents.registerControllers(event => {
 | `name(text)` | Default display name. |
 | `parallelProcessingDefault(bool)` | Optional controller-level default for recipe parallelism. |
 | `maxParallelRecipes(int)` | Optional controller-level cap. `-1` means unspecified/fallback. |
+| `recipeSelectionMode(string)` | Optional recipe scheduling mode: `default`, `avoid_same_recipe`, or `round_robin_input_item`. |
+
+## Recipe selection mode
+
+`recipeSelectionMode(...)` controls how the controller chooses between multiple runnable recipes. This is most useful for machines that have many valid recipes at once and should not keep consuming the same input type.
+
+```js
+MMEvents.registerControllers(event => {
+  event.create('big_sieve')
+    .type('mm:machine')
+    .name('Big Sieve')
+    .parallelProcessingDefault(false)
+    .maxParallelRecipes(1)
+    .recipeSelectionMode('round_robin_input_item')
+})
+```
+
+Supported values:
+
+| Value | Use when |
+|---|---|
+| `default` | You want the normal recipe scan behavior. |
+| `avoid_same_recipe` | You only want to avoid starting the exact same recipe back-to-back. |
+| `round_robin_input_item` | You want the controller to prefer the least-recently-used consumed item input among currently runnable recipes. This is good for sieve-like machines with several input types in one input port. |
+
+Mode strings are forgiving: hyphens/spaces are normalized to underscores, and unknown values fall back to `default`.
 
 > **Important:** Startup-generated controllers, ports, and extra blocks use bare ids in `event.create(...)`. Structures and process recipes are datapack/resource ids and should be namespaced.

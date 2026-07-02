@@ -23,7 +23,8 @@ Example:
   "id": "coke_oven",
   "name": "Coke Oven",
   "parallelProcessingDefault": false,
-  "maxParallelRecipes": -1
+  "maxParallelRecipes": -1,
+  "recipeSelectionMode": "default"
 }
 ```
 
@@ -34,6 +35,19 @@ Example:
 | `name` | string | yes | Display name. |
 | `parallelProcessingDefault` | boolean | no | Defaults to `false`. Used by recipes unless overridden. |
 | `maxParallelRecipes` | integer | no | Controller override. `-1` means unspecified/fallback. Non-negative values clamp up to `100`. Global common config is separate and is ranged `1..100`. |
+| `recipeSelectionMode` | string | no | Recipe scheduling mode. Supported values: `default`, `avoid_same_recipe`, `round_robin_input_item`. Unknown values fall back to `default`. |
+
+### Controller recipe selection modes
+
+`recipeSelectionMode` changes which runnable recipe a formed controller prefers to start. It does not change recipe validity, inputs, outputs, timings, or parallel-processing caps.
+
+| Value | Behavior |
+|---|---|
+| `default` | Normal rotating recipe scan order. |
+| `avoid_same_recipe` | Prefer another runnable recipe instead of starting the exact same recipe as last time. Falls back if only the same recipe can run. |
+| `round_robin_input_item` | Prefer the least-recently-used consumed item input among all currently runnable recipes. Falls back if only one input item type can run. |
+
+`round_robin_input_item` is intended for sieve/washer/recycler-style machines where several input items share one input port and should be processed fairly.
 
 ## Ports
 
