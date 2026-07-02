@@ -61,5 +61,4 @@ title: "Navigation"
 * [Coke oven example](./gallery/coke-oven/)
 * [Custom textures](./general-help/custom-textures/)
 * [Items and commands](./reference/items-and-commands.html)
-* [GitHub Pages hosting](./reference/github-pages.html)
 * [Legacy 1.18-1.19 docs](./legacy-versions/deprecated-1.18-1.19-versions/)

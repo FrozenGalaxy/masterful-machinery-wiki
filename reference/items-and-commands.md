@@ -9,10 +9,14 @@ title: "Items and Commands"
 
 | Item | Purpose |
 |---|---|
-| Blueprint | Stores a structure id in NBT and shows the structure name in the tooltip. Used by structure-view UI features. |
+| Blueprint | Stores a structure id in NBT and shows the structure name in the tooltip. The item display name also includes the structure name when available, for example `Coke Oven - Blueprint`. Used by structure-view UI features. |
 | Debug Tool | Right-click a machine controller to generate a debug dump, when `debugTool = true`. |
 | Priority Setter | Cycles an output priority value from `0` to `10` and applies it to output ports while sneaking. |
 | Multiblock Saver | Marks two corners and writes captured structure files. |
+
+### Blueprint display names
+
+Blueprint stacks are named after their target structure when the structure name can be resolved. For example, a blueprint for a structure named `Coke Oven` appears as `Coke Oven - Blueprint` in item lists/JEI instead of every blueprint appearing only as `Blueprint`.
 
 ## Priority Setter
 

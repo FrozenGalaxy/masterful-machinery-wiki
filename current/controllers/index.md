@@ -51,7 +51,8 @@ Controllers can define default parallel-processing behaviour:
   "id": "my_controller",
   "name": "My Controller",
   "parallelProcessingDefault": false,
-  "maxParallelRecipes": -1
+  "maxParallelRecipes": -1,
+  "recipeSelectionMode": "default"
 }
 ```
 
@@ -59,6 +60,28 @@ Controllers can define default parallel-processing behaviour:
 |---|---:|---|
 | `parallelProcessingDefault` | `false` | Whether recipes for this controller run in parallel by default. |
 | `maxParallelRecipes` | `-1` | Controller-level parallel cap. `-1` means use the global config value. Non-negative values are capped internally at `100`. |
+| `recipeSelectionMode` | `default` | Recipe scheduling mode used when multiple recipes are runnable. See below. |
+
+## Recipe selection mode
+
+Controllers normally scan matching recipes in their existing order. For machines with many recipes that share one port, such as sieves, a fairer selection mode can stop one input type from dominating the machine.
+
+```json
+{
+  "type": "mm:machine",
+  "id": "big_sieve",
+  "name": "Big Sieve",
+  "recipeSelectionMode": "round_robin_input_item"
+}
+```
+
+| Mode | Meaning |
+|---|---|
+| `default` | Current/default behavior. Recipes are checked in the normal rotating scan order. |
+| `avoid_same_recipe` | Prefer not to start the exact same recipe twice in a row when another runnable recipe exists. |
+| `round_robin_input_item` | Prefer the least-recently-used consumed item input among currently runnable recipes. Useful for machines where gravel/sand/dust-style inputs should be kept balanced. |
+
+`round_robin_input_item` falls back to any runnable recipe if only one input type is available, so it should not stall a machine just because the next preferred input is missing.
 
 ## ID usage
 

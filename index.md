@@ -56,7 +56,6 @@ nav_order: 1
 * [Complete JSON Field Reference](./reference/json-field-reference.html) — combined field list for controllers, ports, structures, recipes, and ingredients.
 * [Items and Commands](./reference/items-and-commands.html) — helper items and the `/mm reform` command.
 * [Version and Dependencies](./reference/version-and-dependencies.html) — supported loader and optional compat mods.
-* [Hosting on GitHub Pages](./reference/github-pages.html) — how to publish this wiki.
 
 ## Legacy notes
 
