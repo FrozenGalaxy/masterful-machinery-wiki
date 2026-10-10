@@ -55,6 +55,9 @@ MMEvents.registerControllers(event => {
     .parallelProcessingDefault(false)
     .maxParallelRecipes(-1)
     .recipeSelectionMode('default')
+    .unformedColor('#FF6B5C')
+    .idleColor('#5CFF89')
+    .workingColor('#FFC94D')
 })
 ```
 
@@ -66,6 +69,11 @@ MMEvents.registerControllers(event => {
 | `parallelProcessingDefault(bool)` | Optional controller-level default for recipe parallelism. |
 | `maxParallelRecipes(int)` | Optional controller-level cap. `-1` means unspecified/fallback. |
 | `recipeSelectionMode(string)` | Optional recipe scheduling mode: `default`, `avoid_same_recipe`, or `round_robin_input_item`. |
+| `unformedColor(hex)` | Optional controller screen color while its structure is unformed; accepts `#RRGGBB` or `RRGGBB`. |
+| `idleColor(hex)` | Optional controller screen color while formed and idle; accepts `#RRGGBB` or `RRGGBB`. |
+| `workingColor(hex)` | Optional controller screen color while a recipe is running; accepts `#RRGGBB` or `RRGGBB`. |
+
+The same three fields can be set in the generated controller JSON. They override the local client defaults in `config/mm-client.toml`; the client option `controller.tintControllerScreen` can disable screen tinting. See [Controllers](../../../current/controllers/) for the JSON example and config details.
 
 ## Recipe selection mode
 

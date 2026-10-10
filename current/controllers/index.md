@@ -111,6 +111,25 @@ Server owners can override these values per controller in `config/mm/working_eff
 
 Each field is optional; an empty string disables that effect, and changes reload with F3+T.
 
+## Controller screen colors
+
+The controller screen can use different colors while the machine is unformed, formed and idle, or processing. Put optional `unformedColor`, `idleColor`, and `workingColor` fields in the controller JSON. Colors accept six hexadecimal digits, with or without `#`:
+
+```json
+{
+  "type": "mm:machine",
+  "id": "my_controller",
+  "name": "My Controller",
+  "unformedColor": "#FF6B5C",
+  "idleColor": "#5CFF89",
+  "workingColor": "#FFC94D"
+}
+```
+
+These per-controller colors override the local defaults in `config/mm-client.toml` under `[controller]` (`unformedColor`, `idleColor`, `workingColor`). `tintControllerScreen` enables or disables controller tinting. The same controller colors are used for linked port status lights; `[ports].statusLight` controls whether those lights are shown. Client settings affect only that client.
+
+The KubeJS controller builder also supports `.unformedColor('#FF6B5C')`, `.idleColor('#5CFF89')`, and `.workingColor('#FFC94D')`; each accepts `#RRGGBB` or `RRGGBB`.
+
 ## Assemble a structure from the controller
 
 The controller screen's **Assemble** button opens a structure and port-tier picker. The default tier choice is the lowest registered tier that fits each required port position; selections are clamped to each position's allowed range. The server places blocks from the player's inventory at the rate set by `assemblyBlocksPerTick` in `mm-common.toml` (default `2`, range `1..64`). It does not replace existing blocks and follows normal placement protection checks. Creative players do not need materials.

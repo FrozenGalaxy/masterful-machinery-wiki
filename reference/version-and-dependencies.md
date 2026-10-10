@@ -11,11 +11,11 @@ The feature documentation was checked against the bundled source repository at c
 
 | Property | Value |
 |---|---|
-| `mod_version` | `latest` |
+| `mod_version` | `3-1.20.1-0.1.35.6` |
 | `mc_version` | `1.20.1` |
-| `jei_version` | `15.20.0.112` |
+| `jei_version` | `15.49.0.188` |
 | `mekanism_version` | `1.20.1-10.4.16.80` |
-| `KubeJS_version` | `2001.6.5-build.16` |
+| `kubejs_version` | `2001.6.5-build.16` |
 | `rhino_version` | `2001.2.3-build.10` |
 | `architectury_version` | `9.2.14` |
 | `create_version` | `6.0.6-150` |

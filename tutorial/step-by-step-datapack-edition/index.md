@@ -5,7 +5,7 @@ title: "Step by Step Datapack Edition"
 
 # Step by Step Datapack Edition
 
-This guide builds a small machine with a controller, item ports, a structure, and a process recipe. It follows the current file layout and recipe format. For a complete copyable example, see [Compact Complete Machine Example](../../examples/compact-machine.md).
+This guide builds a small machine with a controller, item ports, a structure, and a process recipe. It follows the current file layout and recipe format. For a complete copyable example, see [Compact Complete Machine Example](../../examples/compact-machine.html).
 
 ## 1. Generate the config folders
 
@@ -110,7 +110,7 @@ The `mm/processes` directory is the recipe loader path. Do not add a root `"type
 3. Confirm the controller forms, then insert cobblestone into an input port.
 4. Leave room in the output port. After 100 ticks, stone should appear there.
 
-Recipes only run when their structure is formed, required inputs are available, outputs can fit, and all recipe conditions pass. If the controller does not form or the recipe does not run, see [Troubleshooting](../../reference/troubleshooting.md).
+Recipes only run when their structure is formed, required inputs are available, outputs can fit, and all recipe conditions pass. If the controller does not form or the recipe does not run, see [Troubleshooting](../../reference/troubleshooting.html).
 
 ## Capture a structure in game
 

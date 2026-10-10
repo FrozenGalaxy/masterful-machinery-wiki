@@ -39,6 +39,11 @@ Example:
 | `workingSound` | resource location | no | Optional sound played while recipes run. |
 | `workingSoundInterval` | integer | no | Ticks between sounds; defaults to `40`. |
 | `workingParticle` | resource location | no | Optional simple particle shown while recipes run. |
+| `unformedColor` | hex color string | no | Controller screen color while the structure is unformed; accepts `#RRGGBB` or `RRGGBB`. |
+| `idleColor` | hex color string | no | Controller screen color while formed and idle. |
+| `workingColor` | hex color string | no | Controller screen color while a recipe is running. |
+
+The color fields also have KubeJS builder methods with matching names. They override client defaults in `config/mm-client.toml`; see [Controllers](../current/controllers/) for the defaults and toggle.
 
 ### Controller recipe selection modes
 

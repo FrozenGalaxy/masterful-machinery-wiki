@@ -643,7 +643,7 @@ This type will allow you to use liquids in your recipe.
 
 In order to use these ingredient types you must first have these dependencies
 
-1. [Create mod](../../../minecraft/mc-mods/create/index.html) and its dependencies installed in your modpack
+1. [Create mod](https://www.curseforge.com/minecraft/mc-mods/create) and its dependencies installed in your modpack
 2. Created a `create_rotation` capable port inside your `config/ports` folder
 
 #### `mm:create_rotation`
@@ -675,7 +675,7 @@ This type will allow you to use creates rotational force in order for your machi
 
 In order to use these ingredient types you must first have these dependencies
 
-1. [Mekanism mod](../../../minecraft/mc-mods/mekanism/index.html) and its dependencies installed in your modpack
+1. [Mekanism mod](https://www.curseforge.com/minecraft/mc-mods/mekanism) and its dependencies installed in your modpack
 2. Created a `mekanism_X` capable port inside your `config/ports` folder
 
 > Do note you cannot use Mekanism Laser as an output.
