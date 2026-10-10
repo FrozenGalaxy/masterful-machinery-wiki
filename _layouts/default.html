@@ -10,6 +10,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="{{ '/assets/images/favicon-16x16.png' | relative_url }}">
   <link rel="shortcut icon" href="{{ '/assets/images/favicon.ico' | relative_url }}">
   <link rel="apple-touch-icon" href="{{ '/assets/images/favicon-180x180.png' | relative_url }}">
+  <script>window.wikiSearchIndex = {{ '/search-index.json' | relative_url | jsonify }};</script>
 </head>
 <body>
   <a class="skip-link" href="#content">Skip to content</a>
@@ -34,6 +35,13 @@
 
   <div class="site-shell">
     <aside class="sidebar" aria-label="Wiki navigation">
+      <form class="site-search" role="search" action="{{ '/search/' | relative_url }}" method="get">
+        <label for="wiki-search">Search the wiki</label>
+        <div class="site-search-row">
+          <input id="wiki-search" name="q" type="search" placeholder="Search pages…" autocomplete="off">
+          <button type="submit">Search</button>
+        </div>
+      </form>
       {% include sidebar.html %}
     </aside>
     <main id="content" class="content">

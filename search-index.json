@@ -1,0 +1,20 @@
+---
+layout: null
+permalink: /search-index.json
+---
+[
+  {% assign first_page = true %}
+  {% for item in site.pages %}
+    {% if item.path contains '.md' and item.path != 'search.md' %}
+      {% assign title = item.title | default: item.name %}
+      {% assign body = item.content | markdownify | strip_html | normalize_whitespace %}
+      {% unless first_page %},{% endunless %}
+      {
+        "title": {{ title | jsonify }},
+        "url": {{ item.url | relative_url | jsonify }},
+        "content": {{ body | jsonify }}
+      }
+      {% assign first_page = false %}
+    {% endif %}
+  {% endfor %}
+]
