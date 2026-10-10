@@ -54,5 +54,15 @@ MMEvents.createProcesses(event => {
 | `parallelProcessing(bool)` | Optional recipe-level override. |
 | `input(object)` | Adds an input entry JSON object. |
 | `output(object)` | Adds an output entry JSON object. |
+| `structureIds(...ids)` | Lets the recipe run in multiple structures. The first ID becomes the primary structure. |
+| `dimension(id)` | Require a dimension, such as `minecraft:the_nether`. |
+| `biome(idOrTag)` | Require a biome ID or `#`-prefixed biome tag. |
+| `time(value)` | Require `day` or `night`. |
+| `weather(value)` | Require `clear`, `rain`, or `thunder`. |
+| `minY(y)` / `maxY(y)` | Restrict the controller's Y coordinate. |
+| `redstone(value)` | Require `powered` or `unpowered`. |
+| `minTier(value)` / `maxTier(value)` | Restrict the formed structure's tier. |
+
+All specified conditions must pass. These methods create the same conditions documented in [Recipe Conditions](../../../current/process-recipes/recipe-conditions/).
 
 The builder stores input/output entries as JSON objects. Any valid JSON recipe entry can be used here.

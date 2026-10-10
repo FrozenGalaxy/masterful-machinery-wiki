@@ -7,6 +7,8 @@ title: "Version and Dependencies"
 
 Values below were read from the provided source tree.
 
+The feature documentation was checked against the bundled source repository at commit `0bde897` (the current clone tip when this page was updated). That source includes changes after `c8268ed`, including the Structure Builder, controller/port interfaces, Input Gateway, and expanded recipe conditions.
+
 | Property | Value |
 |---|---|
 | `mod_version` | `latest` |

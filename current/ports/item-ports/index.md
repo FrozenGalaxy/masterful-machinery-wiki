@@ -30,10 +30,12 @@ Item ports store item stacks for recipes. Input item ports are checked for requi
 | `rows` | Number of inventory rows. |
 | `columns` | Number of inventory columns. |
 | `autoPush` | Optional. Output ports try to push items into nearby inventories. |
-| `slotCapacity` | Optional. `0` uses normal item stack size behaviour; very high values are capped internally. |
+| `slotCapacity` | Optional. `0` uses normal item stack size behaviour; values are capped at `16384` per slot. |
 | `tierRank` | Optional. Used by structure `portType` matching with `minTier`/`maxTier`. |
 
 Total slots are `rows * columns`.
+
+Large item ports keep their configured grid dimensions. Their screen grows to fit larger grids, and the GUI batches content updates to reduce sync and rendering overhead. With AE2 installed, an ME Storage Bus can expose an item port's inventory to the network; see [Ports](../) for the distinction from the Network Linker.
 
 ## Ingredient example
 

@@ -20,6 +20,7 @@ title: "Navigation"
 
 * [Common config](./current/common-config/)
 * [Controllers](./current/controllers/)
+* [Structure Builder](./current/structure-builder/)
 * [Ports](./current/ports/)
 * [Extra blocks](./current/extra-blocks/)
 * [Structures](./current/structures/)

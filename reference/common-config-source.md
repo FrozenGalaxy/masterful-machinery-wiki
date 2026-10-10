@@ -23,6 +23,12 @@ splitRecipesJei = true
 # Default value of autoPush when a compatible port omits autoPush.
 portsAutoExtractByDefault = false
 
+# How often enabled automatic port transfers run, in ticks.
+portAutoIOInterval = 10
+
+# How many blocks controller Assemble places per tick.
+assemblyBlocksPerTick = 2
+
 # Default value of parallelProcessing when not set elsewhere.
 parallelProcessingDefault = false
 
@@ -31,6 +37,21 @@ maxParallelRecipes = 5
 
 # Show the max parallel-processing line in JEI structure view.
 showJeiMaxParallel = true
+
+[network_link]
+outputInterval = 20
+opBypass = true
+sendContentsOnRemove = true
+controllerSearchRadius = 16
+
+[tool]
+energyCapacity = 1000000
+energyPerPlacedBlock = 50
+energyPerDismantledBlock = 25
+energyReceiveRate = 10000
+buildRange = 64
+buildBlocksPerTick = 2
+buildMode = "SEQUENTIAL"
 
 [preview_features]
 # Enables the experimental blueprint screen.
@@ -42,8 +63,11 @@ previewBlueprintScreen = false
 * `asyncValidation` is defined in the common config, but in the provided source snapshot the directly visible controller timing check uses `structureValidationRate`. Treat `asyncValidation` as experimental unless you verify behavior in your build.
 * Increase `structureValidationRate` if you have many controllers and want less frequent structure checks.
 * Disable `debugTool` on public servers if players should not generate debug dumps.
-* Use `portsAutoExtractByDefault = false` and enable `autoPush` only on ports that need it.
+* Use `portsAutoExtractByDefault = false` and enable `autoPush` only on ports that need it. Set per-side input/output behavior in each port's GUI.
 * Keep global `maxParallelRecipes` modest. The common config value is ranged `1..100` and defaults to `5`. Controller/structure builder values are separate and may use `-1` as an unspecified/fallback value.
+* See [Structure Builder](../current/structure-builder/) for the tool settings and placement-mode precedence.
+
+`portAutoIOInterval` ranges from `1..200`; `assemblyBlocksPerTick` ranges from `1..64`. The `[tool]` and `[network_link]` sections have additional validated settings documented on the [Common Config](../current/common-config/) page.
 
 ## `maxParallelRecipes` range
 

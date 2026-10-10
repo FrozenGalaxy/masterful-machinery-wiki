@@ -5,7 +5,7 @@ title: "Common Config"
 
 # Common Config
 
-The global config file is `mm-common.toml`. It controls debug tools, JEI display, structure validation, port auto-push defaults, and parallel-processing defaults.
+The global config file is `mm-common.toml`. It controls debug tools, JEI display, structure validation, port auto I/O, controller assembly, parallel processing, Network Linker behavior, and Structure Builder energy and placement.
 
 ```toml
 # Enables the Debug Tool Item's functionality. Disable on public servers.
@@ -16,6 +16,8 @@ splitRecipesJei = true
 
 # Default value for port auto-extraction when a port supports it and does not override it.
 portsAutoExtractByDefault = false
+portAutoIOInterval = 10
+assemblyBlocksPerTick = 2
 ```
 
 ## Common options
@@ -25,6 +27,28 @@ portsAutoExtractByDefault = false
 | `debugTool` | `true` | Enables the MM debug tool item. Disable it on servers where players should not use it. |
 | `splitRecipesJei` | `true` | When enabled, JEI recipe categories are split by structure instead of being merged into one category. |
 | `portsAutoExtractByDefault` | `false` | Default auto-push value for ports that can automatically extract into nearby storage. |
+| `portAutoIOInterval` | `10` | Ticks between enabled per-side port transfers. Range `1..200`. |
+| `assemblyBlocksPerTick` | `2` | Blocks placed per tick by the controller Assemble action. Range `1..64`. |
+
+## Structure Builder and Network Linker options
+
+These settings are in the `[network_link]` and `[tool]` sections of `mm-common.toml`:
+
+| Option | Default | Meaning |
+|---|---:|---|
+| `network_link.outputInterval` | `20` | Ticks between linked machine output transfers to AE2. Range `1..1200`. |
+| `network_link.opBypass` | `true` | Allow operators to open and break any linked machine. |
+| `network_link.sendContentsOnRemove` | `true` | Send linked port contents to AE2 if a port is removed. |
+| `network_link.controllerSearchRadius` | `16` | Search radius used to find a linked port's controller. Range `4..64`. |
+| `tool.energyCapacity` | `1000000` | Structure Builder FE capacity. |
+| `tool.energyPerPlacedBlock` | `50` | FE consumed per placed block. |
+| `tool.energyPerDismantledBlock` | `25` | FE consumed per dismantled block. |
+| `tool.energyReceiveRate` | `10000` | Maximum FE accepted per tick from a charger. |
+| `tool.buildRange` | `64` | Maximum Structure Builder targeting and placement distance. Range `5..128`; only loaded chunks are targeted. |
+| `tool.buildBlocksPerTick` | `2` | Blocks placed per tick in sequential or layer mode. Range `1..1024`. |
+| `tool.buildMode` | `SEQUENTIAL` | Placement mode: `SEQUENTIAL`, `LAYER_BY_LAYER`, or `INSTANT`. |
+
+Operators can edit server settings in-game through the Structure Builder config tab. See [Structure Builder](../structure-builder/) for how placement modes interact with the per-tool instant option.
 
 ## 1.20.1 options
 

@@ -319,7 +319,7 @@ Example:
 | `ticks` | integer | yes | Runtime in game ticks. 20 ticks = 1 second. |
 | `inputs` | array | yes | Input entries. |
 | `outputs` | array | yes | Output entries. |
-| `conditions` | array | no | Extra requirements. |
+| `conditions` | array | no | Extra requirements; all entries must pass. Supported types: `mm:dimension`, `mm:biome`, `mm:time`, `mm:weather`, `mm:height`, `mm:redstone`, and `mm:tier`. See [Recipe Conditions](../current/process-recipes/recipe-conditions/). |
 | `parallelProcessing` | boolean | no | Overrides global/controller defaults. |
 
 ### Input entries

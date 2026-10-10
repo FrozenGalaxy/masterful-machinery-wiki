@@ -20,6 +20,7 @@ Masterful Machinery reads generated controller, port, and extra-block definition
 ```
 
 The config loaders recursively scan those folders and load files ending in `.json`.
+`config/mm/working_effects.json` is an optional per-controller override for working sounds and particles; it is not a generated block definition.
 
 ## Datapack data
 
@@ -61,6 +62,8 @@ becomes:
 mypack:coke_oven/charcoal
 ```
 
+Structure Builder gallery structures from datapacks use `data/<namespace>/mm_builder_structures/**/*.nbt` (with legacy `mbtool_structures` and `spatial_structures` paths also recognized).
+
 ## KubeJS alternative
 
 If KubeJS is installed, the source exposes the `MMEvents` event group:
@@ -71,6 +74,9 @@ MMEvents.registerPorts(event => {})       // startup
 MMEvents.registerExtraBlocks(event => {}) // startup
 MMEvents.createStructures(event => {})    // server
 MMEvents.createProcesses(event => {})     // server
+MMEvents.builderStructures(event => {})   // server
+MMEvents.recipeStarted(event => {})       // server
+MMEvents.recipeFinished(event => {})      // server
 ```
 
 Controllers and ports are startup content. Structures and process recipes are server content.

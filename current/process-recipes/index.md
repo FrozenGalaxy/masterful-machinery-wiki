@@ -32,7 +32,7 @@ data/<namespace>/recipes/<path>.json
 | `ticks` | Recipe duration in game ticks. `20` ticks = 1 second. |
 | `inputs` | List of input entries, usually `mm:input/consume`. |
 | `outputs` | List of output entries, usually `mm:output/simple`. |
-| `conditions` | Optional list of dimension/weather restrictions. |
+| `conditions` | Optional list of requirements such as dimension, biome, time, weather, height, redstone, or structure tier. All listed conditions must pass. |
 | `parallelProcessing` | Optional per-recipe parallel-processing override. |
 
 ## Parallel processing

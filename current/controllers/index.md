@@ -17,6 +17,8 @@ Controllers are the machine brains. A placed controller checks the blocks around
 
 The controller GUI reports whether a structure is formed and which structure was detected.
 
+The GUI also shows machine state, current recipe and progress, structure tier, and parallel limits. Its port-list page shows each connected port and its contents. On wide screens the controller can use a larger layout; the client preference is saved locally. The recipe display rotates through long input/output lists, opens matching JEI recipes on click, and supports a per-controller working-sound mute.
+
 ## Creating a controller
 
 Create JSON files in:
@@ -82,6 +84,38 @@ Controllers normally scan matching recipes in their existing order. For machines
 | `round_robin_input_item` | Prefer the least-recently-used consumed item input among currently runnable recipes. Useful for machines where gravel/sand/dust-style inputs should be kept balanced. |
 
 `round_robin_input_item` falls back to any runnable recipe if only one input type is available, so it should not stall a machine just because the next preferred input is missing.
+
+## Redstone control and comparator output
+
+Controllers can be configured to react to redstone through the controller GUI. The GUI's redstone row cycles the operating mode; the current mode is also visible in the machine status. A redstone recipe condition can separately require a powered or unpowered controller.
+
+The controller modes are **Ignore redstone**, **Run with redstone**, and **Run without redstone**. The chosen mode is saved per controller.
+
+Controllers emit comparator output for machine activity: `0` while unformed or idle, and `1..15` while working according to the furthest-running recipe's progress. A recipe that completes within one tick reports `15`.
+
+## Working sounds and particles
+
+Controllers can optionally define `workingSound`, `workingSoundInterval` (ticks, default `40`), and `workingParticle`. These effects play while a recipe runs. KubeJS controller builders support `.workingSound(id)`, `.workingSoundInterval(ticks)`, and `.workingParticle(id)`. A player's client can disable effects in client config; the controller GUI sound button mutes sound for that machine.
+
+Server owners can override these values per controller in `config/mm/working_effects.json`. For example:
+
+```json
+{
+  "mm:auto_crusher": {
+    "sound": "minecraft:block.grindstone.use",
+    "interval": 25,
+    "particle": "minecraft:smoke"
+  }
+}
+```
+
+Each field is optional; an empty string disables that effect, and changes reload with F3+T.
+
+## Assemble a structure from the controller
+
+The controller screen's **Assemble** button opens a structure and port-tier picker. The default tier choice is the lowest registered tier that fits each required port position; selections are clamped to each position's allowed range. The server places blocks from the player's inventory at the rate set by `assemblyBlocksPerTick` in `mm-common.toml` (default `2`, range `1..64`). It does not replace existing blocks and follows normal placement protection checks. Creative players do not need materials.
+
+See [Structure Builder](../structure-builder/) for the held tool, which can also complete a formed machine.
 
 ## ID usage
 

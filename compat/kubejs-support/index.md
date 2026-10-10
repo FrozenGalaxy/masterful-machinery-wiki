@@ -17,6 +17,9 @@ MMEvents.registerPorts(event => {})
 MMEvents.registerExtraBlocks(event => {})
 MMEvents.createStructures(event => {})
 MMEvents.createProcesses(event => {})
+MMEvents.builderStructures(event => {})
+MMEvents.recipeStarted(event => {})
+MMEvents.recipeFinished(event => {})
 ```
 
 | Event | Script side | Purpose |
@@ -26,6 +29,9 @@ MMEvents.createProcesses(event => {})
 | `registerExtraBlocks` | startup | Register generated decorative/helper blocks. |
 | `createStructures` | server | Register datapack-style structure definitions. |
 | `createProcesses` | server | Register datapack-style process recipes. |
+| `builderStructures` | server | Add or remove non-MM `.nbt` structures in the Structure Builder gallery. |
+| `recipeStarted` | server | React when a machine recipe starts. |
+| `recipeFinished` | server | React when a machine recipe finishes. |
 
 ## ID rule: generated content vs datapack content
 
@@ -48,3 +54,27 @@ Generated startup content and datapack/server content use different `event.creat
 * [Register extra blocks](./register-extra-blocks/)
 * [Create structures](./create-structures/)
 * [Create process recipes](./create-process-recipes/)
+
+## Structure Builder gallery event
+
+```js
+MMEvents.builderStructures(event => {
+  event.remove('mbtool:some_structure')
+  event.removeNamespace('mbtool')
+  event.add('mypack:my_structure', 'mypack:structures/my_structure.nbt')
+})
+```
+
+This server event edits the Structure Builder's list of non-MM multiblocks. `remove` takes one structure ID, `removeNamespace` removes all entries from a namespace, and `add` takes a gallery ID plus a resource location for a vanilla structure `.nbt` file. See [Structure Builder](../../current/structure-builder/) for format and limitations.
+
+The `recipeStarted` and `recipeFinished` events can be filtered by recipe ID. Both expose `recipeId`, `controllerId`, `structureId`, `controller`, `level`, `pos`, and `block`. `recipeStarted` can be cancelled to prevent that recipe from starting; `recipeFinished` runs after completion. For example:
+
+```js
+MMEvents.recipeStarted('mypack:my_recipe', event => {
+  console.log(`${event.recipeId} started in ${event.structureId}`)
+})
+
+MMEvents.recipeFinished(event => {
+  console.log(`${event.recipeId} finished at ${event.pos}`)
+})
+```

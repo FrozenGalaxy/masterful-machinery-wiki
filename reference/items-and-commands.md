@@ -13,6 +13,10 @@ title: "Items and Commands"
 | Debug Tool | Right-click a machine controller to generate a debug dump, when `debugTool = true`. |
 | Priority Setter | Cycles an output priority value from `0` to `10` and applies it to output ports while sneaking. |
 | Multiblock Saver | Marks two corners and writes captured structure files. |
+| Structure Builder | Selects, previews, builds, completes, or dismantles multiblock structures. |
+| Input Gateway | Routes resources to the input ports of a nearby or formed machine. |
+| Machine Wrench | Provides machine-link information and unlinking controls. |
+| Machine Network Linker | Links a machine to its owner/team and an AE2 network. |
 
 ### Blueprint display names
 
@@ -26,6 +30,18 @@ Blueprint stacks are named after their target structure when the structure name 
 * Input ports reject priority application.
 
 Output priority is useful when several output ports could accept the same result and you want one port preferred.
+
+## Input Gateway
+
+The Input Gateway is `mm:input_gateway`. It has no inventory of its own; it forwards items, fluids, FE, and supported Mekanism chemicals to the machine's input ports. See [Ports](../current/ports/) for placement and supported resource types.
+
+## Structure Builder
+
+The Structure Builder is `mm:structure_builder`. Shift+use opens its gallery and settings. Right-click previews/builds; Shift+right-click twice or hold the rebindable dismantle key to dismantle. Press the rebindable anchor key (G by default) to save/release a remote placement target. See [Structure Builder](../current/structure-builder/) for placement, ME integration, energy, and supported `.nbt` structures.
+
+## Network Linker and Machine Wrench
+
+Use the Machine Network Linker to link a machine to an AE2 network and its owner/team. Its modes include linking and inspecting/unlinking. Operators can use the Machine Wrench's info mode to inspect or unlink a machine link. This integration requires Applied Energistics 2.
 
 ## Multiblock Saver
 

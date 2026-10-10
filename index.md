@@ -43,6 +43,7 @@ nav_order: 1
 <div class="grid-cards">
   <a class="card" href="./current/common-config/"><strong>Common config</strong><span>Global behaviour, validation rate, JEI grouping, and parallel defaults.</span></a>
   <a class="card" href="./current/controllers/"><strong>Controllers</strong><span>Machine brains that detect structures and run recipes.</span></a>
+  <a class="card" href="./current/structure-builder/"><strong>Structure Builder</strong><span>Preview, build, complete, and dismantle MM and supported datapack multiblocks.</span></a>
   <a class="card" href="./current/ports/"><strong>Ports</strong><span>Item, fluid, energy, Create, PneumaticCraft, Botania, and Mekanism interaction blocks.</span></a>
   <a class="card" href="./current/structures/"><strong>Structures</strong><span>Multiblock layout JSON, keyed requirements, port matching, and ports-anywhere mode.</span></a>
   <a class="card" href="./current/process-recipes/"><strong>Process recipes</strong><span>Recipe duration, inputs, outputs, conditions, per-tick behaviour, and chance.</span></a>
