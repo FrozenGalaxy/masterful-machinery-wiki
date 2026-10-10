@@ -6,7 +6,13 @@
   const input = document.getElementById("wiki-search");
   if (input) input.value = query;
 
-  const terms = query.toLocaleLowerCase().split(/\s+/).filter(Boolean);
+  const normalize = value => value.normalize("NFKD")
+    .replace(/\p{M}/gu, "")
+    .toLocaleLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, " ")
+    .trim();
+  const normalizedQuery = normalize(query);
+  const terms = normalizedQuery.split(/\s+/).filter(Boolean);
   if (!terms.length) {
     status.textContent = "Enter a word or phrase to search the wiki.";
     return;
@@ -18,10 +24,9 @@
       return response.json();
     })
     .then(pages => {
-      const normalizedQuery = query.toLocaleLowerCase();
       const matches = pages.map(page => {
-        const title = page.title.toLocaleLowerCase();
-        const content = page.content.toLocaleLowerCase();
+        const title = normalize(page.title);
+        const content = normalize(page.content);
         if (!terms.every(term => title.includes(term) || content.includes(term))) return null;
 
         const score = terms.reduce((total, term) => total + (title.includes(term) ? 5 : 0) + (content.includes(term) ? 1 : 0), 0)

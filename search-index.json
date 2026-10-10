@@ -5,7 +5,7 @@ permalink: /search-index.json
 [
   {% assign first_page = true %}
   {% for item in site.pages %}
-    {% if item.path contains '.md' and item.path != 'search.md' %}
+    {% if item.url != '/search/' and item.url != '/search-index.json' and item.content and item.content != '' %}
       {% assign title = item.title | default: item.name %}
       {% assign body = item.content | markdownify | strip_html | normalize_whitespace %}
       {% unless first_page %},{% endunless %}
