@@ -44,7 +44,7 @@ Check:
 2. The structure is currently formed.
 3. Inputs are available in input ports.
 4. Outputs have room in output ports.
-5. Conditions pass, for example dimension/weather.
+5. Every configured condition passes. Supported types are `mm:dimension`, `mm:biome`, `mm:weather`, `mm:time`, `mm:height`, `mm:redstone`, and `mm:tier`; see [Recipe Conditions](../current/process-recipes/recipe-conditions/).
 6. Energy/fluid/chemical units are large enough for the recipe.
 7. If `per_tick = true`, the port must satisfy the amount every tick, not just once.
 
@@ -54,7 +54,7 @@ Use `nbt` as a JSON object or `nbt_snbt` as a string. Start with weak/default ma
 
 ## Auto-output does nothing
 
-Only compatible ports support `autoPush`. Set it on the port config:
+`autoPush` controls the port's initial output-push setting; supported port types expose the side configuration in the port GUI. Configure the machine-relative side(s) there and check that the neighbor accepts the resource. Transfers run at the `portAutoIOInterval` from `mm-common.toml` (default `10` ticks, range `1..200`). Set `autoPush` in the port definition:
 
 ```json
 "config": {

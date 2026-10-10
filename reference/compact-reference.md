@@ -29,12 +29,16 @@ Dense one-page reference for Masterful Machinery on **Minecraft 1.20.1 Forge**. 
 .minecraft/config/mm/
 ├─ controllers/<id>.json       # generated controllers
 ├─ ports/<id>.json             # generated input/output port variants
-└─ extras/<id>.json            # generated extra blocks
+├─ extras/<id>.json            # generated extra blocks
+└─ working_effects.json        # optional per-controller sound/particle overrides
 
 <datapack>/pack.mcmeta
 <datapack>/data/<namespace>/mm/structures/<path>.json  # structure id <namespace>:<path>
 <datapack>/data/<namespace>/mm/processes/<path>.json   # recipe id <namespace>:<path>
+<datapack>/data/<namespace>/mm_builder_structures/<path>.nbt  # Structure Builder gallery
 ```
+
+The builder also recognizes legacy `mbtool_structures/` and `spatial_structures/` NBT paths. `working_effects.json` lives at `config/mm/working_effects.json`, beside the generated-definition folders.
 
 Example ids:
 
@@ -54,14 +58,31 @@ structureValidationRate = 10           # controller structure check interval; 20
 debugTool = true                       # enables Debug Tool behavior
 splitRecipesJei = true                 # split JEI categories by structure
 portsAutoExtractByDefault = false      # default autoPush/auto-extract fallback
+portAutoIOInterval = 10                # interval for per-side port transfers, 1..200 ticks
+assemblyBlocksPerTick = 2               # controller Assemble placement speed, 1..64
 parallelProcessingDefault = false      # global recipe parallel default
 maxParallelRecipes = 5                 # global parallel cap, range 1..100
 showJeiMaxParallel = true              # show parallel info in JEI structure view
+[network_link]                         # optional AE2 machine link settings
+outputInterval = 20                    # ticks between output transfers, 1..1200
+opBypass = true                        # operators can open/break linked machines
+sendContentsOnRemove = true            # send linked port contents to ME when removed
+controllerSearchRadius = 16            # controller lookup range, 4..64
+[tool]                                 # Structure Builder server settings
+energyCapacity = 1000000
+energyPerPlacedBlock = 50
+energyPerDismantledBlock = 25
+energyReceiveRate = 10000
+buildRange = 64                         # 5..128 blocks; loaded chunks only
+buildBlocksPerTick = 2                  # sequential/layer speed, 1..1024
+buildMode = "SEQUENTIAL"                # SEQUENTIAL, LAYER_BY_LAYER, INSTANT
 [preview_features]
 previewBlueprintScreen = false         # experimental blueprint preview UI
 ```
 
-Practical defaults: keep `portsAutoExtractByDefault = false`, raise `structureValidationRate` for large packs, keep `maxParallelRecipes` modest, and disable `debugTool` on public servers if debug dumps should not be available to players.
+Practical defaults: keep `portsAutoExtractByDefault = false`, raise `structureValidationRate` for large packs, keep `maxParallelRecipes` modest, and disable `debugTool` on public servers if debug dumps should not be available to players. Operators can edit server settings in-game from the Structure Builder config tab.
+
+Port auto I/O side settings are saved per port. `autoPush` or `portsAutoExtractByDefault` sets an output port's initial auto-push state; input pull sides are configured in the port GUI. Client-only controller/port visual settings and per-machine sound mute do not belong to `mm-common.toml`.
 
 ## Controller JSON
 
@@ -78,7 +99,9 @@ Path: `config/mm/controllers/<file>.json`.
 }
 ```
 
-Fields: `type` required, currently `mm:machine`; `id` required base id; `name` required display name; `parallelProcessingDefault` optional boolean default `false`; controller `maxParallelRecipes` optional integer, `-1` means unspecified/fallback, non-negative values clamp up to `100`; `recipeSelectionMode` optional string: `default`, `avoid_same_recipe`, or `round_robin_input_item`. The global common config value is separate and is ranged `1..100`.
+Fields: `type` required, currently `mm:machine`; `id` required base id; `name` required display name; `parallelProcessingDefault` optional boolean default `false`; controller `maxParallelRecipes` optional integer, `-1` means unspecified/fallback, non-negative values clamp up to `100`; `recipeSelectionMode` optional string: `default`, `avoid_same_recipe`, or `round_robin_input_item`; optional `workingSound`, `workingSoundInterval` (default 40 ticks), and `workingParticle` for working effects. The global common config value is separate and is ranged `1..100`.
+
+Controller screen controls include redstone mode (`IGNORED`, `WITH_REDSTONE`, `WITHOUT_REDSTONE`), recipe selection, parallel mode, rename, sound mute, and **Assemble**. Assemble chooses a structure and port tiers, then places blocks from player inventory at `assemblyBlocksPerTick` (default 2; 1..64). A comparator reports 0 when unformed/idle and 1..15 based on the furthest-running recipe's progress. The GUI also shows state, progress, tier, recipe inputs/outputs, and a port contents page.
 
 KubeJS startup equivalent:
 
@@ -167,7 +190,9 @@ Port config examples:
 { "type": "mm:mekanism/gas", "config": { "capacity": 1000 } }
 ```
 
-Item `slotCapacity`: optional; `0` means normal stack behavior; very high values are internally capped. Fluid units are millibuckets. Energy units are FE. Create kinetic input reads speed and contributes stress impact; output provides speed and stress capacity. PneumaticCraft air uses volume and pressure thresholds.
+Item `slotCapacity`: optional; `0` means normal stack behavior; values cap at `16384` per slot. Fluid units are millibuckets. Energy units are FE. Create kinetic input reads speed and contributes stress impact; output provides speed and stress capacity. PneumaticCraft air uses volume and pressure thresholds. Ports can pull/push on selected machine-relative sides; fluid and Mekanism chemical ports also have lock/dump controls. An AE2 Storage Bus can expose an item port to an ME network.
+
+The Input Gateway (`mm:input_gateway`) forwards items, fluids, FE, and Mekanism gas/infusion/pigment/slurry to machine inputs without storing them. It can replace casing/glass in a structure or sit next to an input port; its contents view is read-only.
 
 ## Ingredient object examples
 
@@ -260,6 +285,8 @@ MMEvents.createStructures(event => {
 
 Path: `data/<namespace>/mm/processes/<path>.json`.
 
+The `mm/processes` resource loader identifies these as MM recipes. Do not add a root `"type": "mm:process"` field; `type` is used on input/output entries and conditions.
+
 ```json
 {
   "structureId": "tiny:tiny_furnace",
@@ -285,7 +312,7 @@ Path: `data/<namespace>/mm/processes/<path>.json`.
 }
 ```
 
-Fields: `structureId` required; `ticks` required integer, 20 ticks = 1 second; `inputs` required array; `outputs` required array; `conditions` optional array; `parallelProcessing` optional boolean override. A recipe can run only when the controller has a formed structure matching `structureId`, all inputs are available, all outputs have room, and all conditions pass.
+Fields: `structureId` required; `ticks` required integer, 20 ticks = 1 second; `inputs` required array; `outputs` required array; `conditions` optional array; `parallelProcessing` optional boolean override. A recipe can run only when the controller has a formed structure matching `structureId`, all inputs are available, output capacity is available, and all conditions pass. Output space is checked before inputs are consumed. A completed recipe waits without losing progress if its output becomes blocked.
 
 Input entry:
 
@@ -299,16 +326,34 @@ Output entry:
 { "type": "mm:output/simple", "ingredient": { "type": "mm:item", "item": "minecraft:iron_nugget", "count": 9 }, "chance": 1.0, "per_tick": false }
 ```
 
+Weighted output chooses one option according to its positive integer weight; `{ "weight": 1, "nothing": true }` is a valid no-output option:
+
+```json
+{
+  "type": "mm:output/weighted",
+  "options": [
+    { "weight": 3, "ingredient": { "type": "mm:item", "item": "minecraft:iron_nugget", "count": 4 } },
+    { "weight": 1, "ingredient": { "type": "mm:item", "item": "minecraft:gold_nugget", "count": 1 } },
+    { "weight": 1, "nothing": true }
+  ]
+}
+```
+
 `chance` defaults to `1.0` and is a probability from `0.0` to `1.0`. `per_tick` defaults to `false`; if true, the ingredient is consumed or produced during recipe ticks instead of only at completion. For item outputs, shorthand fields directly on the output entry may be accepted by the source, but the explicit `ingredient` object is recommended.
 
 Conditions:
 
 ```json
 { "type": "mm:dimension", "dimension": "minecraft:the_nether" }
+{ "type": "mm:biome", "biome": "#minecraft:is_ocean" }
+{ "type": "mm:time", "time": "night" }
 { "type": "mm:weather", "weather": "clear" }
+{ "type": "mm:height", "minY": 0, "maxY": 64 }
+{ "type": "mm:redstone", "redstone": "powered" }
+{ "type": "mm:tier", "minTier": 2, "maxTier": 4 }
 ```
 
-Weather values: `clear`, `rain`, `thunder`.
+Dimension, biome, time (`day`/`night`), weather (`clear`/`rain`/`thunder`), height, redstone (`powered`/`unpowered`), and structure tier conditions are supported. All conditions must pass. Height checks controller Y; biome values can be IDs or `#`-prefixed tags.
 
 KubeJS server equivalent:
 
@@ -396,22 +441,26 @@ MMEvents.registerExtraBlocks(event => {})
 // server_scripts
 MMEvents.createStructures(event => {})
 MMEvents.createProcesses(event => {})
+MMEvents.builderStructures(event => {})
+MMEvents.recipeStarted(event => {})
+MMEvents.recipeFinished(event => {})
 ```
 
-Controllers, ports, and extra blocks are startup content. Structures and process recipes are server content.
+Controllers, ports, and extra blocks are startup content. Structures, recipes, builder gallery edits, and recipe lifecycle events are server content. `recipeStarted` can be filtered by recipe id and cancelled; `recipeFinished` can be filtered by recipe id. Both event objects expose recipe/controller/structure ids, level, position, and controller/block references.
 
 Recipe selection modes: `default` uses normal scan order; `avoid_same_recipe` avoids immediately repeating the exact recipe when possible; `round_robin_input_item` prefers the least-recently-used consumed item input among runnable recipes, useful for sieve-like machines.
 
 Common builder method map:
 
 ```text
-controller: create(id), type(id), name(text), parallelProcessingDefault(bool), maxParallelRecipes(int), recipeSelectionMode(string)
+controller: create(id), type(id), name(text), parallelProcessingDefault(bool), maxParallelRecipes(int), recipeSelectionMode(string), workingSound(id), workingSoundInterval(ticks), workingParticle(id)
 port: create(id), name(text), controllerId(id) repeatable, config(portType, builder => ...)
 extra block: create(id), type(id), name(text)
 structure: create(id), name(text), controllerId(id) repeatable, maxParallelRecipes(int), layout(builder => ...)
 structure layout: layer([rows...]), key(char, object), portsAnywhere(bool)
-process: create(id), structureId(id), ticks(int), parallelProcessing(bool), input(object), output(object)
-port config builders: item rows/columns/autoPush/slotCapacity/tierRank; fluid rows/columns/slotCapacity/autoPush/tierRank; energy capacity/maxReceive/maxExtract/autoPush/tierRank; kinetic stress; mana capacity; air volume/danger/critical; Mekanism chemical capacity/amount depending builder.
+process: create(id), structureId(id), structureIds(...ids), ticks(int), parallelProcessing(bool), input(object), output(object), dimension(id), biome(id/tag), time(day/night), weather(value), minY(y), maxY(y), redstone(value), minTier(t), maxTier(t)
+builderStructures: remove(id), removeNamespace(namespace), add(id, nbtResource)
+port config builders: item rows/columns/autoPush/slotCapacity (max 16384)/tierRank; fluid rows/columns/slotCapacity/autoPush/tierRank; energy capacity/maxReceive/maxExtract/autoPush/tierRank; kinetic stress; mana capacity; air volume/danger/critical; Mekanism chemical capacity/amount depending builder.
 ```
 
 ## Items and commands
@@ -420,6 +469,9 @@ port config builders: item rows/columns/autoPush/slotCapacity/tierRank; fluid ro
 * Debug Tool: right-click a controller to generate a debug dump when `debugTool = true`.
 * Priority Setter: right-click in air cycles priority `0..10`; sneak-right-click air resets to `0`; sneak-right-click output port applies priority; input ports reject priority. Useful when multiple output ports can accept the same output.
 * Multiblock Saver: marks two corners and captures a structure region to JSON/JS-style output; source has safety checks including a 50,000-block capture limit and a limit on unique key characters.
+* Structure Builder (`mm:structure_builder`): Shift+use opens gallery/settings; right-click previews/builds; G anchors/releases a remote target; V (rebindable) or Shift+right-click twice dismantles. It uses FE and blocks, can bind to AE2 for inventory/auto-crafting, and also loads supported other-mod NBT structures. See [Structure Builder](../current/structure-builder/).
+* Input Gateway (`mm:input_gateway`): forwards supported resources to machine inputs; see [Ports](../current/ports/).
+* Machine Network Linker / Machine Wrench: link a machine to AE2 and inspect or unlink ownership/network details.
 * Command: `/mm reform`, permission level 2. Scans loaded chunks around players, finds controller block entities, checks known structures, and reforms matching controllers. Useful after structure edits or migrations.
 
 
@@ -496,14 +548,16 @@ Recipe visible but not running:
 1. `structureId` exactly matches the structure id generated from datapack path.
 2. Structure is currently formed at the controller.
 3. Inputs exist in input ports and outputs have room in output ports.
-4. Conditions pass: dimension/weather.
+4. Conditions pass: dimension, biome, time, weather, height, redstone, and/or tier.
 5. Unit amounts are correct: items count, fluid mB, energy FE, chemical amount, mana, air/pressure, Create speed.
 6. `per_tick: true` means the port must satisfy the requirement every tick, not just once.
 7. Parallel settings do not exceed global/controller/structure caps.
 
 NBT mismatch: prefer `nbt` JSON object or `nbt_snbt` string, start with default/`weak`, use `strong` only for exactness.
 
-Auto-output does nothing: only compatible output ports auto-push; set `autoPush` on the port config or check `portsAutoExtractByDefault`; make sure the adjacent block can accept the capability/resource.
+Auto input/output does nothing: configure the port's machine-relative sides in its GUI, confirm the neighbor supports the resource, and check `portAutoIOInterval`. For output initial state, check port `autoPush` or `portsAutoExtractByDefault`.
+
+Recipe stalls at completion: check output port capacity and available space. Finished work remains pending until output space opens; it should not consume the inputs a second time.
 
 Server cost too high: increase `structureValidationRate`, reduce `maxParallelRecipes`, avoid huge port inventories/tanks, avoid excessive per-tick recipes, and be cautious with experimental async validation.
 

@@ -7,17 +7,18 @@ title: "Process Recipes"
 
 Process recipes define what a formed machine does. A recipe names the structure it belongs to, how long it runs, what it consumes, and what it outputs.
 
-Recipes belong in datapacks under the normal recipe path:
+Recipes are loaded from Masterful Machinery's custom process directory (not Minecraft's `recipes/` directory):
 
 ```text
-data/<namespace>/recipes/<path>.json
+data/<namespace>/mm/processes/<path>.json
 ```
+
+The recipe ID is the datapack namespace and path relative to `mm/processes`. The root recipe object has **no** `type` field: the loader selects the recipe model from this directory. `type` fields belong on input entries, output entries, and conditions, where they select the entry/condition parser.
 
 ## Minimal shape
 
 ```json
 {
-  "type": "mm:process",
   "structureId": "mypack:my_structure",
   "ticks": 60,
   "inputs": [],
@@ -27,7 +28,6 @@ data/<namespace>/recipes/<path>.json
 
 | Field | Meaning |
 |---|---|
-| `type` | Recipe serializer. Use `mm:process` for Masterful Machinery process recipes. |
 | `structureId` | ID of the structure that can run this recipe. |
 | `ticks` | Recipe duration in game ticks. `20` ticks = 1 second. |
 | `inputs` | List of input entries, usually `mm:input/consume`. |
@@ -39,7 +39,6 @@ data/<namespace>/recipes/<path>.json
 
 ```json
 {
-  "type": "mm:process",
   "structureId": "mypack:my_structure",
   "ticks": 100,
   "parallelProcessing": true,

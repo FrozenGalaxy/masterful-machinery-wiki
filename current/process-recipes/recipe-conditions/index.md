@@ -11,7 +11,6 @@ Add a `conditions` array to the recipe root:
 
 ```json
 {
-  "type": "mm:process",
   "structureId": "mypack:my_structure",
   "ticks": 60,
   "conditions": [

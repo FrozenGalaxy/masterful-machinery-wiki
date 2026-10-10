@@ -36,6 +36,9 @@ Example:
 | `parallelProcessingDefault` | boolean | no | Defaults to `false`. Used by recipes unless overridden. |
 | `maxParallelRecipes` | integer | no | Controller override. `-1` means unspecified/fallback. Non-negative values clamp up to `100`. Global common config is separate and is ranged `1..100`. |
 | `recipeSelectionMode` | string | no | Recipe scheduling mode. Supported values: `default`, `avoid_same_recipe`, `round_robin_input_item`. Unknown values fall back to `default`. |
+| `workingSound` | resource location | no | Optional sound played while recipes run. |
+| `workingSoundInterval` | integer | no | Ticks between sounds; defaults to `40`. |
+| `workingParticle` | resource location | no | Optional simple particle shown while recipes run. |
 
 ### Controller recipe selection modes
 
@@ -353,6 +356,20 @@ Example:
 
 Output entries use the same optional `chance` and `per_tick` fields. For item outputs, the source also accepts shorthand fields such as `item`, `count`, and NBT fields directly on the output entry, but the full `ingredient` object is clearer and recommended.
 
+Weighted outputs use `mm:output/weighted` and a non-empty `options` array. Each option has a positive integer `weight` (default `1`) and an `ingredient`; an option without an ingredient or item outputs nothing. Relative chances are proportional to weights:
+
+```json
+{
+  "type": "mm:output/weighted",
+  "chance": 1.0,
+  "options": [
+    { "weight": 3, "ingredient": { "type": "mm:item", "item": "minecraft:iron_nugget", "count": 4 } },
+    { "weight": 1, "ingredient": { "type": "mm:item", "item": "minecraft:gold_nugget", "count": 1 } },
+    { "weight": 1, "nothing": true }
+  ]
+}
+```
+
 ### Conditions
 
 Supported condition types:
@@ -362,7 +379,15 @@ Supported condition types:
 ```
 
 ```json
+{ "type": "mm:biome", "biome": "#minecraft:is_ocean" }
+{ "type": "mm:time", "time": "night" }
+{ "type": "mm:height", "minY": 0, "maxY": 64 }
+{ "type": "mm:redstone", "redstone": "powered" }
+{ "type": "mm:tier", "minTier": 2, "maxTier": 4 }
+```
+
+```json
 { "type": "mm:weather", "weather": "clear" }
 ```
 
-Weather values are parsed as enum names. Use lowercase or uppercase variants equivalent to the enum names: `clear`, `rain`, or `thunder`.
+Dimension, biome, time (`day`/`night`), weather (`clear`/`rain`/`thunder`), height, redstone (`powered`/`unpowered`), and tier are supported. Biome accepts an ID or a `#`-prefixed biome tag. Height checks the controller's Y coordinate; either height or tier bound may be omitted. Every listed condition must pass.

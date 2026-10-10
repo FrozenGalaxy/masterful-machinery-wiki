@@ -136,7 +136,7 @@ data/firmaland2/mm/processes/coke\_oven/charcoal.json
       "type": "mm:output/simple",
       "ingredient": {
         "type": "mm:fluid",
-        "fluid": "KubeJS:creosote",
+        "fluid": "kubejs:creosote",
         "amount": 100
       }
     }
@@ -146,10 +146,4 @@ data/firmaland2/mm/processes/coke\_oven/charcoal.json
 
 ---
 
-![](../../~gitbook/image__q4c986ec14285/index.html)
-
-Front Left corner of the structure
-
-![](../../~gitbook/image__qf4cc36f8306f/index.html)
-
-Back right corner of the structure
+This example requires TFC's `tfc:fire_bricks` block and a KubeJS fluid registered as `kubejs:creosote`. Resource IDs must be lowercase; uppercase namespace characters are invalid.
