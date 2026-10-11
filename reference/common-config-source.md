@@ -38,6 +38,10 @@ maxParallelRecipes = 5
 # Show the max parallel-processing line in JEI structure view.
 showJeiMaxParallel = true
 
+[flex]
+costScaling = "LINEAR"
+costTable = ["1=1"]
+
 [network_link]
 outputInterval = 20
 opBypass = true
@@ -65,6 +69,7 @@ previewBlueprintScreen = false
 * Disable `debugTool` on public servers if players should not generate debug dumps.
 * Use `portsAutoExtractByDefault = false` and enable `autoPush` only on ports that need it. Set per-side input/output behavior in each port's GUI.
 * Keep global `maxParallelRecipes` modest. The common config value is ranged `1..100` and defaults to `5`. Controller/structure builder values are separate and may use `-1` as an unspecified/fallback value.
+* `[flex].costScaling` sets how non-flex consumed inputs scale with selected item kinds in flex recipes: `LINEAR` (default), `ONCE`, or `TABLE`. `costTable` defaults to `["1=1"]` and uses `kinds=multiplier` steps when the mode is `TABLE`; a recipe can override it with `flex_cost`. See [Flex Recipes](../current/process-recipes/flex-recipes/).
 * See [Structure Builder](../current/structure-builder/) for the tool settings and placement-mode precedence.
 
 `portAutoIOInterval` ranges from `1..200`; `assemblyBlocksPerTick` ranges from `1..64`. The `[tool]` and `[network_link]` sections have additional validated settings documented on the [Common Config](../current/common-config/) page.

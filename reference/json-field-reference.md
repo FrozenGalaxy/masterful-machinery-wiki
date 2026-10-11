@@ -42,6 +42,7 @@ Example:
 | `unformedColor` | hex color string | no | Controller screen color while the structure is unformed; accepts `#RRGGBB` or `RRGGBB`. |
 | `idleColor` | hex color string | no | Controller screen color while formed and idle. |
 | `workingColor` | hex color string | no | Controller screen color while a recipe is running. |
+| `geoModel` | object | no | Optional GeckoLib model displayed while the structure is formed. See [GeckoLib Machine Models](../current/geckolib-models/). |
 
 The color fields also have KubeJS builder methods with matching names. They override client defaults in `config/mm-client.toml`; see [Controllers](../current/controllers/) for the defaults and toggle.
 
@@ -189,6 +190,7 @@ Example:
 | `portsAnywhere` | boolean | no | Lets normal port and portType pieces match any of the candidate port positions in the layout. |
 | `maxParallelRecipes` | integer | no | Per-structure override. `-1` means unspecified/fallback; non-negative values clamp up to `100`. Global common config is separate and is ranged `1..100`. |
 | `stateLists` | object | no | Defines named lists of block states used by `stateList` pieces. |
+| `geoModel` | object or string | no | Structure-specific GeckoLib model config, or `"none"` to disable the controller model. |
 
 ### Structure key piece types
 
@@ -329,8 +331,13 @@ Example:
 | `outputs` | array | yes | Output entries. |
 | `conditions` | array | no | Extra requirements; all entries must pass. Supported types: `mm:dimension`, `mm:biome`, `mm:time`, `mm:weather`, `mm:height`, `mm:redstone`, and `mm:tier`. See [Recipe Conditions](../current/process-recipes/recipe-conditions/). |
 | `parallelProcessing` | boolean | no | Overrides global/controller defaults. |
+| `structureIds` | array of resource locations | no | Additional structures allowed to run this recipe. `structureId` remains the primary ID. |
+| `mode` | string | no | `fixed` (default) or `flex`; flexible entries require `flex`. |
+| `flex_cost` | string or object | no | Flex input cost scaling override (`linear`, `once`, or a `table`). Requires `mode: "flex"`. |
 
 ### Input entries
+
+In addition to `mm:input/consume`, recipes support `mm:input/count` (a non-consuming item count), `mm:input/flex` (select item kinds for a flex run), and `mm:input/flex_match` (require an item related to each selected kind). Their complete fields are listed in [Flex Recipes and Counted Inputs](../current/process-recipes/flex-recipes/).
 
 ```json
 {
@@ -349,6 +356,8 @@ Example:
 | `per_tick` | boolean | no | If `true`, input is consumed every recipe tick rather than once on completion. |
 
 ### Output entries
+
+`mm:output/flex` generates one item output for each selected flex input kind. Simple outputs can also use `scale_by` to multiply an output amount by a count or kind total. See [Flex Recipes and Counted Inputs](../current/process-recipes/flex-recipes/).
 
 ```json
 {

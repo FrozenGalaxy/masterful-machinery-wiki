@@ -52,6 +52,7 @@ mypack:coke_oven
 | `controllerIds` | Single controller ID or list of controller IDs that can form this structure. |
 | `layout` | 3D character layout, stored as layers of rows. Spaces are ignored. |
 | `key` | Maps each layout character to a block, port, tag, or port-type requirement. |
+| `geoModel` | Optional GeckoLib model for this structure. It replaces the controller's model; `"none"` disables the model. |
 
 ## Layout orientation
 
@@ -110,3 +111,4 @@ Structures can define their own parallel recipe cap:
 `-1` or an omitted field means the structure does not override the controller/global value.
 
 See [Structure Requirements](./structure-requirements/) for available key-entry formats.
+See [GeckoLib Machine Models](../geckolib-models/) for the `geoModel` fields and asset paths.

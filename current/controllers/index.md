@@ -15,7 +15,7 @@ Controllers are the machine brains. A placed controller checks the blocks around
 4. Once formed, it checks matching process recipes.
 5. A recipe can run when all inputs exist, all outputs have room, and all conditions pass.
 
-The controller GUI reports whether a structure is formed and which structure was detected.
+The controller GUI reports whether a structure is formed and which structure was detected. When any part of a structure is in an unloaded chunk, the machine waits without forcing that chunk to load. Port storage is refreshed when the machine's chunks become available again, so running recipes can continue with their saved progress.
 
 The GUI also shows machine state, current recipe and progress, structure tier, and parallel limits. Its port-list page shows each connected port and its contents. On wide screens the controller can use a larger layout; the client preference is saved locally. The recipe display rotates through long input/output lists, opens matching JEI recipes on click, and supports a per-controller working-sound mute.
 
@@ -129,6 +129,10 @@ The controller screen can use different colors while the machine is unformed, fo
 These per-controller colors override the local defaults in `config/mm-client.toml` under `[controller]` (`unformedColor`, `idleColor`, `workingColor`). `tintControllerScreen` enables or disables controller tinting. The same controller colors are used for linked port status lights; `[ports].statusLight` controls whether those lights are shown. Client settings affect only that client.
 
 The KubeJS controller builder also supports `.unformedColor('#FF6B5C')`, `.idleColor('#5CFF89')`, and `.workingColor('#FFC94D')`; each accepts `#RRGGBB` or `RRGGBB`.
+
+## GeckoLib model
+
+An optional `geoModel` object can render a GeckoLib model while the controller's structure is formed. A structure can replace or disable the controller model. See [GeckoLib Machine Models](../geckolib-models/) for the full JSON schema, resource layout, and KubeJS examples.
 
 ## Assemble a structure from the controller
 

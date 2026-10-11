@@ -24,12 +24,12 @@ Blueprint stacks are named after their target structure when the structure name 
 
 ## Priority Setter
 
-* Right-click in air: cycles the priority stored on the item.
+* Right-click in air: cycles the priority stored on the item from `0` through `10`, then back to `0`.
 * Sneak + right-click in air: resets the stored priority to `0`.
 * Sneak + right-click an output port: applies the stored priority to that output port.
 * Input ports reject priority application.
 
-Output priority is useful when several output ports could accept the same result and you want one port preferred.
+Recipe output distribution tries higher-priority ports first for items, fluids, energy, and Mekanism chemicals. When priorities tie, destinations are processed in a deterministic order. Output ports that auto-push to adjacent MM input ports also serve higher-priority neighbors first. Priority `0` is the default.
 
 ## Input Gateway
 

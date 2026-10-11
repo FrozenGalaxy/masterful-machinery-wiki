@@ -7,11 +7,11 @@ title: "Version and Dependencies"
 
 Values below were read from the provided source tree.
 
-The feature documentation was checked against the bundled source repository at commit `0bde897` (the current clone tip when this page was updated). That source includes changes after `c8268ed`, including the Structure Builder, controller/port interfaces, Input Gateway, and expanded recipe conditions.
+The feature documentation was checked against upstream source commit `d93dad5`. The source adds flex recipes and count-scaled outputs, optional GeckoLib machine models, and output priority for more port types, alongside fixes for machines spanning unloaded chunks and energy overflow.
 
 | Property | Value |
 |---|---|
-| `mod_version` | `3-1.20.1-0.1.35.6` |
+| `mod_version` | `3-1.20.1-0.1.35.7` |
 | `mc_version` | `1.20.1` |
 | `jei_version` | `15.49.0.188` |
 | `mekanism_version` | `1.20.1-10.4.16.80` |
@@ -22,12 +22,14 @@ The feature documentation was checked against the bundled source repository at c
 | `flywheel_version` | `1.0.4` |
 | `botania_version` | `1.20.1-450-FORGE` |
 
+The release build also compiles against GeckoLib `4.8.4`; GeckoLib remains optional at runtime and the declared supported range starts at `4.4`. Mystical Agriculture is also optional; MM reads its crop data only when installed for flex recipe essence, crux, and tier templates.
+
 ## Notes
 
 * Main mod id: `mm`.
 * Minecraft target: `1.20.1`.
 * Loader target: Forge.
-* JEI, Jade, KubeJS, Create, Mekanism, PneumaticCraft, and Botania integration classes are present in the source. Some integrations only register when the corresponding mod is loaded.
+* JEI, Jade, KubeJS, Create, Mekanism, PneumaticCraft, Botania, GeckoLib, and Mystical Agriculture integration code is present in the source. Optional integrations activate only when their companion mod is loaded.
 
 
 ## Project links

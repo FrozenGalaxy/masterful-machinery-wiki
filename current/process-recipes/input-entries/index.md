@@ -30,3 +30,7 @@ Input entries define what a recipe checks for and consumes.
 | `ingredient` | Ingredient config object. See [Ingredient Configs](../ingredient-configs/). |
 
 If `chance` is `0`, the input is never consumed. If `chance` is `1`, it is always consumed.
+
+## Counted and flex inputs
+
+`mm:input/count` counts matching items in input item ports without consuming them. Its `as` value can scale an output. `mm:input/flex` selects several distinct item kinds for one flex recipe; `mm:input/flex_match` requires a related item for each selected kind. See [Flex Recipes and Counted Inputs](../flex-recipes/) for their fields, templates, and examples.

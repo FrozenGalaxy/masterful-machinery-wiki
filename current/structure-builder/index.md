@@ -13,6 +13,8 @@ Hold the tool and **Shift+use** to open its screen. The **Structures** tab has a
 
 The Settings tab chooses a preferred tier for each port type. Each structure position still clamps that preference to its allowed tier range. The tool's instant-build preference is saved per item.
 
+When a required `portType` position is missing, the preview diagnostics list the fitting registered port tiers so it is easier to choose a replacement.
+
 ## Preview and build
 
 Right-click a block while holding the tool to preview the selected structure at that target. The hologram marks planned blocks and obstructions; rotate with **Shift+scroll**. Right-click again to start building when the structure is clear. The server checks that the tool is still carried, the target is within range and loaded, materials and FE are available, placement is allowed, and the positions are unobstructed.

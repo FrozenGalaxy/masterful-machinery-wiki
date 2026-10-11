@@ -34,6 +34,9 @@ The recipe ID is the datapack namespace and path relative to `mm/processes`. The
 | `outputs` | List of output entries, usually `mm:output/simple`. |
 | `conditions` | Optional list of requirements such as dimension, biome, time, weather, height, redstone, or structure tier. All listed conditions must pass. |
 | `parallelProcessing` | Optional per-recipe parallel-processing override. |
+| `structureIds` | Optional additional structure IDs that can run this recipe. The primary structure remains `structureId`. |
+| `mode` | Optional recipe mode: `fixed` (default) or `flex`. Flex recipes require at least one `mm:input/flex` entry. |
+| `flex_cost` | Optional override for the common flex-recipe input cost scaling. Only valid with `mode: "flex"`. |
 
 ## Parallel processing
 
@@ -69,3 +72,4 @@ Input and output entries support:
 * [Output entries](./output-entries/)
 * [Ingredient configs](./ingredient-configs/)
 * [Recipe conditions](./recipe-conditions/)
+* [Flex recipes and counted inputs](./flex-recipes/)

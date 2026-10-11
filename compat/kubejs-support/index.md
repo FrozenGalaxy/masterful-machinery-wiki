@@ -20,6 +20,7 @@ MMEvents.createProcesses(event => {})
 MMEvents.builderStructures(event => {})
 MMEvents.recipeStarted(event => {})
 MMEvents.recipeFinished(event => {})
+MMEvents.flexOutput('mypack:my_recipe', event => {})
 ```
 
 | Event | Script side | Purpose |
@@ -32,6 +33,7 @@ MMEvents.recipeFinished(event => {})
 | `builderStructures` | server | Add or remove non-MM `.nbt` structures in the Structure Builder gallery. |
 | `recipeStarted` | server | React when a machine recipe starts. |
 | `recipeFinished` | server | React when a machine recipe finishes. |
+| `flexOutput` | server | Change or reject a flex recipe's output for an individual input item kind. |
 
 ## ID rule: generated content vs datapack content
 
@@ -78,3 +80,5 @@ MMEvents.recipeFinished(event => {
   console.log(`${event.recipeId} finished at ${event.pos}`)
 })
 ```
+
+The `flexOutput` event is also filtered by recipe ID and is documented with examples on [Flex Recipes and Counted Inputs](../../current/process-recipes/flex-recipes/).

@@ -42,6 +42,7 @@ MMEvents.createStructures(event => {
       l.key('O', { portType: 'mm:item', input: false, minTier: 1, maxTier: 1 })
       l.portsAnywhere(false)
     })
+    .geoModel({ model: 'mypack:geo/core.geo.json', texture: 'mypack:textures/block/core.png' })
 })
 ```
 
@@ -51,6 +52,9 @@ MMEvents.createStructures(event => {
 | `name(text)` | Display name for the formed structure. |
 | `controllerId(id)` | Full generated controller id, for example `mm:coke_oven`. Can be called more than once. |
 | `maxParallelRecipes(int)` | Optional structure-level cap. `-1` means no structure override. |
+| `geoModel(value)` | Optional GeckoLib model object for this structure, or `'none'` to suppress the controller model. |
 | `layout(builder => ...)` | Layout builder containing `layer`, `key`, and `portsAnywhere`. |
 
 `layer(...)` is added to the builder in a way that preserves top/bottom ordering after build. When in doubt, verify in-game with JEI/blueprint/debug output.
+
+See [GeckoLib Machine Models](../../../current/geckolib-models/) for model fields and asset paths.

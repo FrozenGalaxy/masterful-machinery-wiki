@@ -52,6 +52,12 @@ MMEvents.createProcesses(event => {
 | `structureId(id)` | Full structure id this recipe belongs to. |
 | `ticks(int)` | Runtime in game ticks. |
 | `parallelProcessing(bool)` | Optional recipe-level override. |
+| `mode(string)` | `fixed` (default) or `flex`; flex-specific entries require `flex`. |
+| `flexInput(as, ingredient, maxTypes?, chance?)` | Adds an item-kind selector for a flex recipe. |
+| `flexMatch(from, item, count, chance)` | Requires a related item per selected flex kind. |
+| `flexOutput(from, match, item, count)` | Creates a templated item output per selected kind. |
+| `flexCost(value)` | Overrides flex input cost scaling with `linear`, `once`, or a table object. |
+| `countInput(as, ingredient, max)` | Counts matching input items without consuming them. |
 | `input(object)` | Adds an input entry JSON object. |
 | `output(object)` | Adds an output entry JSON object. |
 | `structureIds(...ids)` | Lets the recipe run in multiple structures. The first ID becomes the primary structure. |
@@ -64,5 +70,7 @@ MMEvents.createProcesses(event => {
 | `minTier(value)` / `maxTier(value)` | Restrict the formed structure's tier. |
 
 All specified conditions must pass. These methods create the same conditions documented in [Recipe Conditions](../../../current/process-recipes/recipe-conditions/).
+
+For the complete JSON fields, KubeJS examples, cost scaling, item templates, and optional Mystical Agriculture support, see [Flex Recipes and Counted Inputs](../../../current/process-recipes/flex-recipes/).
 
 The builder stores input/output entries as JSON objects. Any valid JSON recipe entry can be used here.

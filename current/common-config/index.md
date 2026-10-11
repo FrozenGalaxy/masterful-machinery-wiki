@@ -5,7 +5,7 @@ title: "Common Config"
 
 # Common Config
 
-The global config file is `mm-common.toml`. It controls debug tools, JEI display, structure validation, port auto I/O, controller assembly, parallel processing, Network Linker behavior, and Structure Builder energy and placement.
+The global config file is `mm-common.toml`. It controls debug tools, JEI display, structure validation, port auto I/O, controller assembly, parallel processing, flex recipe costs, Network Linker behavior, and Structure Builder energy and placement.
 
 ```toml
 # Enables the Debug Tool Item's functionality. Disable on public servers.
@@ -18,6 +18,10 @@ splitRecipesJei = true
 portsAutoExtractByDefault = false
 portAutoIOInterval = 10
 assemblyBlocksPerTick = 2
+
+[flex]
+costScaling = "LINEAR"
+costTable = ["1=1"]
 ```
 
 ## Common options
@@ -29,6 +33,8 @@ assemblyBlocksPerTick = 2
 | `portsAutoExtractByDefault` | `false` | Default auto-push value for ports that can automatically extract into nearby storage. |
 | `portAutoIOInterval` | `10` | Ticks between enabled per-side port transfers. Range `1..200`. |
 | `assemblyBlocksPerTick` | `2` | Blocks placed per tick by the controller Assemble action. Range `1..64`. |
+| `flex.costScaling` | `LINEAR` | Default cost multiplier for other consumed inputs in flex recipes: `LINEAR`, `ONCE`, or `TABLE`. |
+| `flex.costTable` | `["1=1"]` | `kinds=multiplier` steps used when `flex.costScaling = "TABLE"`. |
 
 ## Structure Builder and Network Linker options
 
@@ -51,6 +57,16 @@ These settings are in the `[network_link]` and `[tool]` sections of `mm-common.t
 Operators can edit server settings in-game through the Structure Builder config tab. See [Structure Builder](../structure-builder/) for how placement modes interact with the per-tool instant option.
 
 ## 1.20.1 options
+
+Flex-recipe cost options are in their own `[flex]` section:
+
+```toml
+[flex]
+costScaling = "LINEAR"
+costTable = ["1=1", "4=2", "7=3.5"]
+```
+
+`LINEAR` multiplies other consumed recipe inputs by the number of kinds processed in a flex run. `ONCE` charges them once. `TABLE` chooses the multiplier at the greatest step not above the kind count. A recipe can override this setting with its `flex_cost` field. See [Flex Recipes](../process-recipes/flex-recipes/) for examples.
 
 The 1.20.1 build also supports these options:
 

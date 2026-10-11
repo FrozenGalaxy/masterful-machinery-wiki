@@ -31,6 +31,8 @@ Energy ports store Forge Energy (`FE`) for recipes. Input energy ports consume F
 | `maxExtract` | Maximum FE extracted per transfer. |
 | `tierRank` | Optional. Used by structure `portType` matching with `minTier`/`maxTier`. |
 
+Recipe outputs stop at the port's configured capacity. Energy values left negative by the older overflow bug are clamped to empty when the port loads.
+
 ## Ingredient example
 
 ```json

@@ -47,10 +47,15 @@ Check:
 5. Every configured condition passes. Supported types are `mm:dimension`, `mm:biome`, `mm:weather`, `mm:time`, `mm:height`, `mm:redstone`, and `mm:tier`; see [Recipe Conditions](../current/process-recipes/recipe-conditions/).
 6. Energy/fluid/chemical units are large enough for the recipe.
 7. If `per_tick = true`, the port must satisfy the amount every tick, not just once.
+8. For flex recipes, confirm the root has `"mode": "flex"`, each `from` names an `as` value, and the item template resolves to a registered output item. Missing template outputs cause that kind to be skipped.
 
 ## Item NBT recipe does not match
 
 Use `nbt` as a JSON object or `nbt_snbt` as a string. Start with weak/default matching, then switch to `nbt_match: "strong"` only when you need an exact match.
+
+## Flex recipe does not accept an item
+
+Check that the input is an item or item tag, isn't matched by an `exclude` entry, and has a valid item output from its `match`/`item` template. `min_tier` and `max_tier` only accept Mystical Agriculture seeds. Every `mm:input/flex_match` must resolve to a registered item and have enough copies in the input ports. See [Flex Recipes and Counted Inputs](../current/process-recipes/flex-recipes/) for the exact fields.
 
 ## Auto-output does nothing
 
@@ -86,3 +91,5 @@ Try:
 ```
 
 This refreshes/reforms controller state for controllers in loaded chunks around players.
+
+Machines that span an unloaded chunk pause until that chunk loads again; Masterful Machinery does not force-load machine chunks. Their running recipe progress is retained while waiting.

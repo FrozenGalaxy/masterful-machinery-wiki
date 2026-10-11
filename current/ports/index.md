@@ -19,6 +19,10 @@ When linked to a formed machine, compatible ports can show a status light using 
 
 Fluid and Mekanism chemical port screens also have **Lock** and **Dump** controls. Lock keeps a tank dedicated to its current resource (an empty locked tank adopts the first resource inserted). Dump clears the port contents.
 
+## Output priority
+
+Use the [Priority Setter](../../reference/items-and-commands.html#priority-setter) to assign an output priority from `0` to `10`. Recipe outputs try higher-priority ports first for items, fluids, energy, and Mekanism chemicals; equal-priority recipe destinations use a deterministic order. Output ports with auto-push also serve adjacent Masterful Machinery input ports in descending priority order. Priority `0` is the default.
+
 ## Input Gateway
 
 The Input Gateway is a convenience block that routes received items, fluids, FE, and—when Mekanism is installed—gas, infusion, pigment, and slurry to the machine's matching input ports. It stores no contents of its own. It can occupy a casing or glass position in a structure, or sit beside an input port. The gateway exposes a read-only view of the linked machine's inputs for integrations such as AE2 pattern providers.

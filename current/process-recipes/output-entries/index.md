@@ -55,3 +55,7 @@ Use `mm:output/weighted` when a recipe should produce one result from a weighted
 Exactly one option is selected when the recipe finishes. The relative chance is each option's positive integer `weight` divided by the sum of all weights. An option can use `nothing: true` to represent no output. The entry-level `chance` can also be used to make the entire weighted roll optional.
 
 The controller checks output capacity before it starts consuming a recipe. If outputs become blocked while a recipe is finishing, the completed recipe remains pending until space is available; it does not consume inputs again or discard the result.
+
+## Scaled and flex outputs
+
+Simple outputs can use `scale_by` to multiply the output amount using an `as` name from `mm:input/count` or `mm:input/flex`. `mm:output/flex` creates a separate item output for each kind selected by a flex input. See [Flex Recipes and Counted Inputs](../flex-recipes/) for examples and supported fields.

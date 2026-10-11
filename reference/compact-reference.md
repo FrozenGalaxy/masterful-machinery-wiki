@@ -78,6 +78,9 @@ buildBlocksPerTick = 2                  # sequential/layer speed, 1..1024
 buildMode = "SEQUENTIAL"                # SEQUENTIAL, LAYER_BY_LAYER, INSTANT
 [preview_features]
 previewBlueprintScreen = false         # experimental blueprint preview UI
+[flex]
+costScaling = "LINEAR"                 # LINEAR, ONCE, TABLE
+costTable = ["1=1"]                    # kinds=multiplier steps used by TABLE
 ```
 
 Practical defaults: keep `portsAutoExtractByDefault = false`, raise `structureValidationRate` for large packs, keep `maxParallelRecipes` modest, and disable `debugTool` on public servers if debug dumps should not be available to players. Operators can edit server settings in-game from the Structure Builder config tab.
@@ -312,7 +315,7 @@ The `mm/processes` resource loader identifies these as MM recipes. Do not add a 
 }
 ```
 
-Fields: `structureId` required; `ticks` required integer, 20 ticks = 1 second; `inputs` required array; `outputs` required array; `conditions` optional array; `parallelProcessing` optional boolean override. A recipe can run only when the controller has a formed structure matching `structureId`, all inputs are available, output capacity is available, and all conditions pass. Output space is checked before inputs are consumed. A completed recipe waits without losing progress if its output becomes blocked.
+Fields: `structureId` required; `ticks` required integer, 20 ticks = 1 second; `inputs` required array; `outputs` required array; `conditions` optional array; `parallelProcessing` optional boolean override; `structureIds` optional additional structures; `mode` is `fixed` by default or `flex`; `flex_cost` optionally overrides flex cost scaling. A recipe can run only when the controller has a formed structure matching one of its IDs, all inputs are available, output capacity is available, and all conditions pass. Output space is checked before inputs are consumed. A completed recipe waits without losing progress if its output becomes blocked.
 
 Input entry:
 
@@ -338,6 +341,8 @@ Weighted output chooses one option according to its positive integer weight; `{ 
   ]
 }
 ```
+
+`mm:input/count` counts matching input items without consuming them; `scale_by` on simple outputs multiplies item, fluid, energy, or Mekanism chemical amounts by that count. Flex mode uses `mm:input/flex`, `mm:input/flex_match`, and `mm:output/flex` to process multiple matching item kinds in one recipe. See [Flex Recipes and Counted Inputs](../current/process-recipes/flex-recipes/) for the full schema and KubeJS API.
 
 `chance` defaults to `1.0` and is a probability from `0.0` to `1.0`. `per_tick` defaults to `false`; if true, the ingredient is consumed or produced during recipe ticks instead of only at completion. For item outputs, shorthand fields directly on the output entry may be accepted by the source, but the explicit `ingredient` object is recommended.
 
@@ -467,7 +472,7 @@ port config builders: item rows/columns/autoPush/slotCapacity (max 16384)/tierRa
 
 * Blueprint: stores a structure id in NBT and is used by structure-view/preview features. Blueprint item names include the structure name when available, for example `Coke Oven - Blueprint`.
 * Debug Tool: right-click a controller to generate a debug dump when `debugTool = true`.
-* Priority Setter: right-click in air cycles priority `0..10`; sneak-right-click air resets to `0`; sneak-right-click output port applies priority; input ports reject priority. Useful when multiple output ports can accept the same output.
+* Priority Setter: right-click in air cycles priority `0..10`; sneak-right-click air resets to `0`; sneak-right-click output port applies priority; input ports reject priority. Recipe output distribution tries higher-priority ports first for items, fluids, energy, and Mekanism chemicals. Auto-pushing output ports serve adjacent MM input ports by priority too.
 * Multiblock Saver: marks two corners and captures a structure region to JSON/JS-style output; source has safety checks including a 50,000-block capture limit and a limit on unique key characters.
 * Structure Builder (`mm:structure_builder`): Shift+use opens gallery/settings; right-click previews/builds; G anchors/releases a remote target; V (rebindable) or Shift+right-click twice dismantles. It uses FE and blocks, can bind to AE2 for inventory/auto-crafting, and also loads supported other-mod NBT structures. See [Structure Builder](../current/structure-builder/).
 * Input Gateway (`mm:input_gateway`): forwards supported resources to machine inputs; see [Ports](../current/ports/).

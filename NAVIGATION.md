@@ -46,6 +46,11 @@ title: "Navigation"
 * [Output entries](./current/process-recipes/output-entries/)
 * [Ingredient configs](./current/process-recipes/ingredient-configs/)
 * [Recipe conditions](./current/process-recipes/recipe-conditions/)
+* [Flex recipes and counted inputs](./current/process-recipes/flex-recipes/)
+
+## Visual models
+
+* [GeckoLib machine models](./current/geckolib-models/)
 
 ## KubeJS
 
