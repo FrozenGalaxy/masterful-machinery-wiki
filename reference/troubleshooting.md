@@ -49,6 +49,10 @@ Check:
 7. If `per_tick = true`, the port must satisfy the amount every tick, not just once.
 8. For flex recipes, confirm the root has `"mode": "flex"`, each `from` names an `as` value, and the item template resolves to a registered output item. Missing template outputs cause that kind to be skipped.
 
+## JEI is missing recipes or structures on a dedicated server
+
+Update both the server and clients to Masterful Machinery `0.1.35.8` or newer, then reconnect. This release fixes recipe and structure synchronization before JEI builds its lists; datapack reloads also resend the synced data.
+
 ## Item NBT recipe does not match
 
 Use `nbt` as a JSON object or `nbt_snbt` as a string. Start with weak/default matching, then switch to `nbt_match: "strong"` only when you need an exact match.

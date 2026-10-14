@@ -5,13 +5,13 @@ title: "Version and Dependencies"
 
 # Version and Dependencies
 
-Values below were read from the provided source tree.
+Values below were read from the upstream source.
 
-The feature documentation was checked against upstream source commit `d93dad5`. The source adds flex recipes and count-scaled outputs, optional GeckoLib machine models, and output priority for more port types, alongside fixes for machines spanning unloaded chunks and energy overflow.
+The feature documentation was checked against upstream source commit `9f4e2e1`, including release `0.1.35.8`. This release fixes JEI recipe and structure sync on dedicated servers and after datapack reloads. The documented features also include flex recipes and count-scaled outputs, optional GeckoLib machine models, and output priority for more port types.
 
 | Property | Value |
 |---|---|
-| `mod_version` | `3-1.20.1-0.1.35.7` |
+| `mod_version` | `3-1.20.1-0.1.35.8` |
 | `mc_version` | `1.20.1` |
 | `jei_version` | `15.49.0.188` |
 | `mekanism_version` | `1.20.1-10.4.16.80` |
